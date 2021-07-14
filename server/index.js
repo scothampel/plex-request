@@ -1,4 +1,5 @@
 require('dotenv').config();
+const bcrypt = require('bcrypt');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -7,13 +8,14 @@ const path = require('path');
 const { MongoClient } = require('mongodb');
 
 // Environment vars and defaults
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(process.env.PORT) || 3001;
 const JWT_SECRET = process.env.JWT_SECRET;
+const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS);
 const DB_NAME = process.env.DB_NAME;
 const DB_USER = process.env.DB_USER;
 const DB_PASS = process.env.DB_PASS;
 const DB_HOST = process.env.DB_HOST;
-const DB_PORT = process.env.DB_PORT;
+const DB_PORT = parseInt(process.env.DB_PORT);
 const DB_COLLECTIONS_USERS = process.env.DB_COLLECTIONS_USERS;
 const DB_COLLECTIONS_REQS = process.env.DB_COLLECTIONS_REQS;
 
@@ -55,11 +57,6 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     const usersCollection = db.collection(DB_COLLECTIONS_USERS);
     const requestsCollection = db.collection(DB_COLLECTIONS_REQS);
 
-    // auth endpoint
-    app.post('/api/auth', authJWT, (req, res) => {
-      res.send(req.data);
-    });
-
     // login endpoint
     // Post request URL or JSON encoded
     // user: String
@@ -85,6 +82,50 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
       }
       else {
         res.sendStatus(401);
+      }
+    });
+
+    // register endpoint
+    // Post request URL or JSON encoded
+    // user: String
+    // pass: String
+    app.post('/api/auth/register', (req, res) => {
+      const { name, user, pass } = req.body;
+      // Check for required args
+      if (name && user && pass) {
+        usersCollection.findOne({ user })
+          .then(found => {
+            // Check for existing username
+            if (!found) {
+              // New user obj for collection insertion
+              const newUser = {
+                name,
+                user,
+                pass: bcrypt.hashSync(pass, BCRYPT_ROUNDS),
+                role: 'unconfirmed'
+              }
+
+              // Insert into collection
+              usersCollection.insertOne(newUser)
+                .then(result => {
+                  res.json({status: 1, reason: result});
+                })
+                .catch(err => {
+                  console.log(err);
+                  res.status(500).json({status: -1, reason: err});
+                })
+            }
+            else {
+              res.status(400).json({status: 0, reason: "User already exists"});
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({status: -1, reason: err});
+          });
+      }
+      else {
+        res.status(400).json({status: 0, reason: "Not enough arguments"});
       }
     });
 
