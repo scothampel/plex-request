@@ -55,29 +55,52 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     const usersCollection = db.collection(DB_COLLECTIONS_USERS);
     const requestsCollection = db.collection(DB_COLLECTIONS_REQS);
 
-    // token endpoint
-    app.get('/api/token', (req, res) => {
-      const token = jwt.sign({ 'user': 'scot' }, JWT_SECRET, { expiresIn: '1h' });
-      res.json({ token });
-    });
-
     // auth endpoint
     app.post('/api/auth', authJWT, (req, res) => {
       res.send(req.data);
     });
+
+    // login endpoint
+    // Post request URL or JSON encoded
+    // user: String
+    // pass: String
+    app.post('/api/auth/login', (req, res) => {
+      const { user, pass } = req.body;
+      if (user && pass) {
+        // Find user in user collegtion
+        const match = usersCollection.findOne({ user });
+        // TODO: Verify password
+
+        // Return token if login details are correct
+        if (match) {
+          const token = jwt.sign({
+            user: match.user,
+            role: match.role
+          }, JWT_SECRET, { expiresIn: '1h' });
+          res.json({ token });
+        }
+        else {
+          res.sendStatus(403);
+        }
+      }
+      else {
+        res.sendStatus(401);
+      }
+    });
+
+    // Get request wildcard, redirect to root
+    app.get('*', (req, res) => {
+      res.redirect('/');
+    });
+
+    // 404 all undefined endpoints and methods that aren't GET
+    app.all('*', (req, res) => {
+      res.sendStatus(404);
+    });
+
+    app.listen(PORT, () => {
+      console.log(`Listening on http://localhost:${PORT}/api`);
+    });
   })
-  .catch(err => {console.log(err); return process.exit(1)});
+  .catch(err => { console.log(err); return process.exit(1) });
 
-// Get request wildcard, redirect to root
-app.get('*', (req, res) => {
-  res.redirect('/');
-});
-
-// 404 all undefined endpoints and methods that aren't GET
-app.all('*', (req, res) => {
-  res.sendStatus(404);
-});
-
-app.listen(PORT, () => {
-  console.log(`Listening on http://localhost:${PORT}/api`);
-});
