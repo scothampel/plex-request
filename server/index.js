@@ -59,34 +59,51 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
 
     // login endpoint
     // Post request URL or JSON encoded
+    // 401 for both user not found and incorrect password to prevent user enumeration
     // user: String
     // pass: String
     app.post('/api/auth/login', (req, res) => {
       const { user, pass } = req.body;
       if (user && pass) {
         // Find user in user collegtion
-        const match = usersCollection.findOne({ user });
-        // TODO: Verify password
+        usersCollection.findOne({ user })
+          .then(found => {
+            // Return token if login details are correct
+            if (found) {
+              // Verify password
+              const correctPass = bcrypt.compareSync(pass, found.pass);
+              if (correctPass) {
+                // Generate JWT
+                const token = jwt.sign({
+                  user: found.user,
+                  role: found.role
+                }, JWT_SECRET, { expiresIn: '1h' });
 
-        // Return token if login details are correct
-        if (match) {
-          const token = jwt.sign({
-            user: match.user,
-            role: match.role
-          }, JWT_SECRET, { expiresIn: '1h' });
-          res.json({ token });
-        }
-        else {
-          res.sendStatus(403);
-        }
+                res.json({ status: 1, reason: token });
+              }
+              // Incorrect password
+              else {
+                res.status(401).json({ status: 0, reason: "Incorrect username or password" });
+              }
+            }
+            // User not found
+            else {
+              res.status(401).json({ status: 0, reason: "Incorrect username or password" });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({ status: -1, reason: err });
+          })
       }
       else {
-        res.sendStatus(401);
+        res.status(400).json({ status: 0, reason: "Not enough arguments" });
       }
     });
 
     // register endpoint
     // Post request URL or JSON encoded
+    // name: String
     // user: String
     // pass: String
     app.post('/api/auth/register', (req, res) => {
@@ -108,24 +125,24 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
               // Insert into collection
               usersCollection.insertOne(newUser)
                 .then(result => {
-                  res.json({status: 1, reason: result});
+                  res.json({ status: 1, reason: result });
                 })
                 .catch(err => {
                   console.log(err);
-                  res.status(500).json({status: -1, reason: err});
+                  res.status(500).json({ status: -1, reason: err });
                 })
             }
             else {
-              res.status(400).json({status: 0, reason: "User already exists"});
+              res.status(400).json({ status: 0, reason: "User already exists" });
             }
           })
           .catch(err => {
             console.log(err);
-            res.status(500).json({status: -1, reason: err});
+            res.status(500).json({ status: -1, reason: err });
           });
       }
       else {
-        res.status(400).json({status: 0, reason: "Not enough arguments"});
+        res.status(400).json({ status: 0, reason: "Not enough arguments" });
       }
     });
 
