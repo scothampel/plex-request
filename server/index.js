@@ -49,7 +49,7 @@ const authJWT = (req, res, next) => {
   }
 }
 
-// Api only accessible if MongoDB is reachable
+// Only accessible if MongoDB is reachable
 MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10000 })
   .then(client => {
     console.log('DB connection successful');
@@ -62,7 +62,7 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     // 401 for both user not found and incorrect password to prevent user enumeration
     // user: String
     // pass: String
-    app.post('/api/auth/login', (req, res) => {
+    app.post('/auth/login', (req, res) => {
       const { user, pass } = req.body;
       if (user && pass) {
         // Find user in user collegtion
@@ -106,7 +106,7 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     // name: String
     // user: String
     // pass: String
-    app.post('/api/auth/register', (req, res) => {
+    app.post('/auth/register', (req, res) => {
       const { name, user, pass } = req.body;
       // Check for required args
       if (name && user && pass) {
