@@ -18,7 +18,8 @@ const DB_PASS = process.env.DB_PASS;
 const DB_HOST = process.env.DB_HOST;
 const DB_PORT = parseInt(process.env.DB_PORT);
 const DB_COLLECTIONS_USERS = process.env.DB_COLLECTIONS_USERS;
-const DB_COLLECTIONS_REQS = process.env.DB_COLLECTIONS_REQS;
+const DB_COLLECTIONS_REFRESH = process.env.DB_COLLECTIONS_REFRESH;
+const DB_COLLECTIONS_REQUESTS = process.env.DB_COLLECTIONS_REQUESTS;
 
 // Mongodb connect string
 const mongodbStr = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}`;
@@ -56,7 +57,8 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     console.log('DB connection successful');
     const db = client.db(DB_NAME);
     const usersCollection = db.collection(DB_COLLECTIONS_USERS);
-    const requestsCollection = db.collection(DB_COLLECTIONS_REQS);
+    const refreshCollection = db.collection(DB_COLLECTIONS_REFRESH);
+    const requestsCollection = db.collection(DB_COLLECTIONS_REQUESTS);
 
     // login endpoint
     // Post request URL or JSON encoded
@@ -81,8 +83,19 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
                 }, JWT_AUTH_SECRET, { expiresIn: '5m' });
                 // Generate JWT refresh
                 const refresh = jwt.sign({
-                  user: found.user
+                  user: found.user,
+                  ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress
                 }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
+
+                // Insert refresh token into refresh collection
+                refreshCollection.insertOne({
+                  user: found.user,
+                  token: refresh
+                })
+                .catch(err => {
+                  console.log(err);
+                  res.status(500).json({ status: -1, message: err });
+                })
 
                 // Store refresh token in HttpOnly cookie with 7d expiration, only send to /auth/refresh
                 res.header('Set-Cookie', `refresh=${refresh}; Max-Age=604800; path=/auth/refresh; SameSite=Lax; Secure; HttpOnly`)
