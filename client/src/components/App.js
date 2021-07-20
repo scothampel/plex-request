@@ -4,13 +4,13 @@ import Login from './Login';
 import '../css/App.css';
 
 function App() {
-  const [user, setUser] = useState();
+  const [token, setToken] = useState();
 
   return (
     <Router>
       <Switch>
         <Route path='/login'>
-          <Login />
+          <Login onLogin={setToken} />
         </Route>
         <Route path='/register'>
           Register

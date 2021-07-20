@@ -1,12 +1,16 @@
 import '../css/Login.css';
 
-export default function Login() {
+export default function Login(props) {
+  const { onLogin } = props;
   const handleSubmit = e => {
+    // Prevent submission
     e.preventDefault();
 
+    // Get username and password from form
     const user = e.target[0].value;
     const pass = e.target[1].value;
 
+    // Attempt login
     fetch('/auth/login', {
       method: 'POST',
       body: JSON.stringify({user, pass}),
@@ -15,7 +19,26 @@ export default function Login() {
       }
     })
       .then(res => res.json())
-      .then(dat => console.log(dat));
+      .then(data => {
+        const { status, message } = data;
+        switch (status) {
+          // Successful login
+          case 1:
+            // Set token
+            console.log(message);
+            onLogin(message)
+            break;
+          // Bad input
+          case 0:
+            console.error(message);
+            break;
+          // Server error
+          default:
+            console.error('Internal Server Error', message);
+            break;
+        }
+      })
+      .catch(err => console.error('Internal Server Error', err));
   }
 
   return (
