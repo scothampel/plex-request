@@ -9,7 +9,8 @@ const { MongoClient } = require('mongodb');
 
 // Environment vars and defaults
 const PORT = parseInt(process.env.PORT) || 3001;
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_AUTH_SECRET = process.env.JWT_AUTH_SECRET;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS);
 const DB_NAME = process.env.DB_NAME;
 const DB_USER = process.env.DB_USER;
@@ -36,7 +37,7 @@ const authJWT = (req, res, next) => {
   const header = req.headers.authorization;
   if (header) {
     const token = header.split(' ')[1];
-    jwt.verify(token, JWT_SECRET, (err, data) => {
+    jwt.verify(token, JWT_AUTH_SECRET, (err, data) => {
       if (err) {
         return res.sendStatus(403);
       }
@@ -73,12 +74,18 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
               // Verify password
               const correctPass = bcrypt.compareSync(pass, found.pass);
               if (correctPass) {
-                // Generate JWT
+                // Generate JWT auth
                 const token = jwt.sign({
                   user: found.user,
                   role: found.role
-                }, JWT_SECRET, { expiresIn: '1h' });
+                }, JWT_AUTH_SECRET, { expiresIn: '5m' });
+                // Generate JWT refresh
+                const refresh = jwt.sign({
+                  user: found.user
+                }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
 
+                // Store refresh token in HttpOnly cookie with 7d expiration, only send to /auth/refresh
+                res.header('Set-Cookie', `refresh=${refresh}; Max-Age=604800; path=/auth/refresh; SameSite=Lax; Secure; HttpOnly`)
                 res.json({ status: 1, message: token });
               }
               // Incorrect password
