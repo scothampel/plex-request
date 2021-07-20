@@ -146,9 +146,9 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
       }
     });
 
-    // Get request wildcard, redirect to root
+    // Get request wildcard, send index.html to allow react router routes
     app.get('*', (req, res) => {
-      res.redirect('/');
+      res.sendFile(path.join(__dirname, '../client/build/index.html'));
     });
 
     // 404 all undefined endpoints and methods that aren't GET
