@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const { MongoClient } = require('mongodb');
+const cookieParser = require('cookie-parser');
 
 // Environment vars and defaults
 const PORT = parseInt(process.env.PORT) || 3001;
@@ -28,6 +29,7 @@ const mongodbStr = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}`;
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
 // Serve static react front-end
@@ -164,6 +166,68 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
       else {
         res.status(400).json({ status: 0, message: "Not enough arguments" });
       }
+    });
+
+    // refresh endpoint
+    // Post request URL or JSON encoded
+    // 401 for both user not found and incorrect password to prevent user enumeration
+    // user: String
+    // pass: String
+    app.post('/auth/refresh', (req, res) => {
+      const token = req.cookies.refresh;
+      console.log(token);
+      // if (user && pass) {
+      //   // Find user in user collegtion
+      //   usersCollection.findOne({ user })
+      //     .then(found => {
+      //       // Return token if login details are correct
+      //       if (found) {
+      //         // Verify password
+      //         const correctPass = bcrypt.compareSync(pass, found.pass);
+      //         if (correctPass) {
+      //           // Generate JWT auth
+      //           const token = jwt.sign({
+      //             user: found.user,
+      //             role: found.role
+      //           }, JWT_AUTH_SECRET, { expiresIn: '5m' });
+      //           // Generate JWT refresh
+      //           const refresh = jwt.sign({
+      //             user: found.user,
+      //             ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress
+      //           }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
+
+      //           // Insert refresh token into refresh collection
+      //           refreshCollection.insertOne({
+      //             user: found.user,
+      //             token: refresh
+      //           })
+      //           .catch(err => {
+      //             console.log(err);
+      //             res.status(500).json({ status: -1, message: err });
+      //           })
+
+      //           // Store refresh token in HttpOnly cookie with 7d expiration, only send to /auth/refresh
+      //           res.header('Set-Cookie', `refresh=${refresh}; Max-Age=604800; path=/auth/refresh; SameSite=Lax; Secure; HttpOnly`)
+      //           res.json({ status: 1, message: token });
+      //         }
+      //         // Incorrect password
+      //         else {
+      //           res.status(401).json({ status: 0, message: "Incorrect username or password" });
+      //         }
+      //       }
+      //       // User not found
+      //       else {
+      //         res.status(401).json({ status: 0, message: "Incorrect username or password" });
+      //       }
+      //     })
+      //     .catch(err => {
+      //       console.log(err);
+      //       res.status(500).json({ status: -1, message: err });
+      //     })
+      // }
+      // else {
+      //   res.status(400).json({ status: 0, message: "Not enough arguments" });
+      // }
     });
 
     // Get request wildcard, send index.html to allow react router routes
