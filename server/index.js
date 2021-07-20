@@ -79,25 +79,25 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
                   role: found.role
                 }, JWT_SECRET, { expiresIn: '1h' });
 
-                res.json({ status: 1, reason: token });
+                res.json({ status: 1, message: token });
               }
               // Incorrect password
               else {
-                res.status(401).json({ status: 0, reason: "Incorrect username or password" });
+                res.status(401).json({ status: 0, message: "Incorrect username or password" });
               }
             }
             // User not found
             else {
-              res.status(401).json({ status: 0, reason: "Incorrect username or password" });
+              res.status(401).json({ status: 0, message: "Incorrect username or password" });
             }
           })
           .catch(err => {
             console.log(err);
-            res.status(500).json({ status: -1, reason: err });
+            res.status(500).json({ status: -1, message: err });
           })
       }
       else {
-        res.status(400).json({ status: 0, reason: "Not enough arguments" });
+        res.status(400).json({ status: 0, message: "Not enough arguments" });
       }
     });
 
@@ -125,24 +125,24 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
               // Insert into collection
               usersCollection.insertOne(newUser)
                 .then(result => {
-                  res.json({ status: 1, reason: result });
+                  res.json({ status: 1, message: result });
                 })
                 .catch(err => {
                   console.log(err);
-                  res.status(500).json({ status: -1, reason: err });
+                  res.status(500).json({ status: -1, message: err });
                 })
             }
             else {
-              res.status(400).json({ status: 0, reason: "User already exists" });
+              res.status(400).json({ status: 0, message: "User already exists" });
             }
           })
           .catch(err => {
             console.log(err);
-            res.status(500).json({ status: -1, reason: err });
+            res.status(500).json({ status: -1, message: err });
           });
       }
       else {
-        res.status(400).json({ status: 0, reason: "Not enough arguments" });
+        res.status(400).json({ status: 0, message: "Not enough arguments" });
       }
     });
 
