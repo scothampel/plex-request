@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from './Login';
-import useLocalState from '../hooks/useLocalState';
 import '../css/App.css';
 
 function App() {
-  const [user, setUser] = useLocalState();
+  const [user, setUser] = useState();
 
   return (
     <Router>
