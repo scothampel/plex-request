@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Login from './Login';
+import Register from './Register';
 import '../css/App.css';
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
           <Login onLogin={setToken} />
         </Route>
         <Route path='/register'>
-          Register
+          <Register />
         </Route>
         <Route path='/'>
           Index
