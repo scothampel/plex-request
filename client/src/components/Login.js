@@ -13,7 +13,7 @@ export default function Login(props) {
     // Attempt login
     fetch('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({user, pass}),
+      body: JSON.stringify({ user, pass }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -43,7 +43,7 @@ export default function Login(props) {
 
   return (
     <div className='container' id='login'>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={ handleSubmit }>
         <div className='mb-3'>
           <label htmlFor='user' className='form-label'>Username</label>
           <input type='text' className='form-control' id='user' name='user' required/>
