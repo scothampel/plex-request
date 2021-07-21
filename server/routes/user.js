@@ -95,6 +95,7 @@ module.exports = function (database) {
               }
             }
             // Error returned from tmdb api
+            // Probably missing query
             // TODO: Might handle differently later
             else {
               res.status(400).json({status: 0, message: data.errors[0]});
