@@ -167,7 +167,7 @@ module.exports = function (database) {
               const token = jwt.sign({
                 user: valid.user,
                 role: valid.role
-              }, JWT_AUTH_SECRET, { expiresIn: '10m' });
+              }, JWT_AUTH_SECRET, { expiresIn: '5m' });
 
               res.json({ status: 1, message: token });
             }
