@@ -78,7 +78,7 @@ module.exports = function (database) {
               //res.header('Set-Cookie', `refresh=${refresh}; Max-Age=604800; path=/auth/refresh; SameSite=Lax; Secure; HttpOnly`)
               res.cookie('refresh', refresh, {
                 maxAge: 7 * 24 * 60 * 60 * 1000,
-                path: '/auth/refresh',
+                path: '/auth',
                 sameSite: 'Lax',
                 httpOnly: true,
                 secure: true
@@ -155,7 +155,7 @@ module.exports = function (database) {
   router.post('/refresh', (req, res) => {
     const token = req.cookies.refresh;
     if (token) {
-      // Find token in refresh collegtion
+      // Find token in refresh collection
       refreshCollection.findOne({ token })
         .then(found => {
           // Check if refresh token found
@@ -190,6 +190,35 @@ module.exports = function (database) {
     }
     else {
       res.status(400).json({ status: 0, message: "No refresh token provided" });
+    }
+  });
+
+  // logout endpoint
+  // Post request with refresh cookie set
+  router.post('/logout', (req, res) => {
+    const token = req.cookies.refresh;
+    if (token) {
+      // Delete token in refresh collection
+      refreshCollection.deleteOne({ token })
+        .then(deleted => {
+          // Check if refresh token found
+          if (deleted.deletedCount === 1) {
+            // Successful logout
+            res.json({ status: 1, message: deleted });
+          }
+          // Token not found
+          else {
+            // Token does not exist in collection, so already "logged out"
+            res.status(401).json({ status: 0, message: "Invalid refresh token, already logged out" });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ status: -1, message: err });
+        })
+    }
+    else {
+      res.status(401).json({ status: 0, message: "Not logged in" });
     }
   });
 
