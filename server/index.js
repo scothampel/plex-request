@@ -68,6 +68,14 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     const refreshCollection = db.collection(DB_COLLECTIONS_REFRESH);
     const requestsCollection = db.collection(DB_COLLECTIONS_REQUESTS);
 
+    // Database object to pass to route handlers
+    const database = {
+      db,
+      usersCollection,
+      refreshCollection,
+      requestsCollection
+    }
+
     // login endpoint
     // Post request URL or JSON encoded
     // 401 for both user not found and incorrect password to prevent user enumeration
