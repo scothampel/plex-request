@@ -1,7 +1,6 @@
 import '../css/Login.css';
 
-export default function Login(props) {
-  const { onLogin } = props;
+export default function Login({ setToken }) {
   const handleSubmit = e => {
     // Prevent submission
     e.preventDefault();
@@ -25,8 +24,7 @@ export default function Login(props) {
           // Successful login
           case 1:
             // Set token
-            console.log(message);
-            onLogin(message)
+            setToken(message)
             break;
           // Bad input
           case 0:
