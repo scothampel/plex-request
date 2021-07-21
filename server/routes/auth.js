@@ -10,27 +10,6 @@ const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS);
 
 // JWT auth function
 const authJWT = (token, secret) => jwt.verify(token, secret, (err, data) => err ? false : data);
-// JWT auth callback
-const authJWTCallback = (req, res, next) => {
-  const header = req.headers.authorization;
-  if (header) {
-    // Pull token from header and verify it
-    const token = header.split(' ')[1];
-    const auth = authJWT(token, JWT_AUTH_SECRET);
-
-    // If verified, attach token body to req
-    if (auth) {
-      req.data = auth;
-      next();
-    }
-    else {
-      res.sendStatus(403);
-    }
-  }
-  else {
-    res.sendStatus(401);
-  }
-}
 
 module.exports = function (database) {
   // Destructure database object
