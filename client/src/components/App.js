@@ -4,6 +4,7 @@ import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
 import '../styles/App.css';
+import Search from './Search';
 
 function App() {
   const [token, setToken] = useState();
@@ -44,6 +45,9 @@ function App() {
         <Route path='/logout'>
           {token ? <Logout setToken={setToken} /> : <Redirect to='/' />}
         </Route>
+        <Route path='/search'>
+          <Search token={token}/>
+        </Route>
         <Route path='/'>
           {/* Temp for testing */}
           {loading && 'Loading...'}
@@ -52,6 +56,8 @@ function App() {
               <Link to='/login'>Login</Link>
               <Link to='/register'>Register</Link>
               <Link to='/logout'>Logout</Link>
+              <Link to='/search'>Logout</Link>
+              {token}
             </div>
           }
           {!loading && !token && <Redirect to='/login' />}
