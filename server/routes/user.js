@@ -43,10 +43,48 @@ module.exports = function (database) {
   // Destructure database object
   const { requestsCollection } = database;
 
+  // request endpoint
+  // Post request URL or JSON encoded
+  // title: String
+  // year: String
+  // type: String
   router.post('/request', authJWTCallback, authorizedCallback, (req, res) => {
-    // No check here, as authJWT only runs next() if req.data is set
-    // No role confirmation, handled by authorized callback
-    const { user, role } = req.data;
+    const { user } = req.data;
+    const { title, type, year } = req.body;
+
+    // Required arguments
+    // Year not checked, as it is not always available
+    if (title && type) {
+      // If year is provided, include in search
+      const searchReq = year ? req.body : { title, type };
+      // Search existing requests
+      requestsCollection.findOne(searchReq)
+        .then(found => {
+          // Request doesn't already exist
+          if (!found) {
+            // Submit request
+            requestsCollection.insertOne({ ...req.body, user })
+              .then(result => {
+                res.json({ status: 1, message: 'Request submitted successfully!' });
+              })
+              .catch(err => {
+                console.log(err);
+                res.status(500).json({ status: -1, message: 'Internal server error' });
+              })
+          }
+          // Request already exists
+          else {
+            res.status(400).json({ status: 0, message: 'Title already requested' });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ status: -1, message: 'Internal server error' });
+        })
+    }
+    else {
+      res.status(400).json({ status: 0, message: 'Not enough arguments' });
+    }
   });
 
   // search endpoint
@@ -83,22 +121,22 @@ module.exports = function (database) {
                     title: current.title || current.name,
                     type: current.media_type,
                     // Movie and tv types have two different date props, get the year
-                    year: (current.release_date || current.first_air_date).split('-')[0],
+                    year: (current.release_date || current.first_air_date || '').split('-')[0],
                     // Full path to the title's poster using urls from tvdb config, picks 3rd smallest poster size at pos 2
                     poster: current.poster_path ? config.secure_base_url + config.poster_sizes[2] + current.poster_path : null
                   }
                 });
-                res.json({status: 1, message: formatted});
+                res.json({ status: 1, message: formatted });
               }
               else {
-                res.status(404).json({status: 0, message: 'Not found'});
+                res.status(404).json({ status: 0, message: 'Not found' });
               }
             }
             // Error returned from tmdb api
             // Probably missing query
             // TODO: Might handle differently later
             else {
-              res.status(400).json({status: 0, message: data.errors[0]});
+              res.status(400).json({ status: 0, message: data.errors[0] });
             }
           })
           .catch(err => {
