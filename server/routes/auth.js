@@ -50,7 +50,7 @@ module.exports = function (database) {
               })
                 .catch(err => {
                   console.log(err);
-                  res.status(500).json({ status: -1, message: err });
+                  res.status(500).json({ status: -1, message: 'Internal server error' });
                 })
 
               // Store refresh token in HttpOnly cookie with 7d expiration, only send to /auth/refresh
@@ -66,21 +66,21 @@ module.exports = function (database) {
             }
             // Incorrect password
             else {
-              res.status(401).json({ status: 0, message: "Incorrect username or password" });
+              res.status(401).json({ status: 0, message: 'Incorrect username or password' });
             }
           }
           // User not found
           else {
-            res.status(401).json({ status: 0, message: "Incorrect username or password" });
+            res.status(401).json({ status: 0, message: 'Incorrect username or password' });
           }
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({ status: -1, message: err });
+          res.status(500).json({ status: -1, message: 'Internal server error' });
         })
     }
     else {
-      res.status(400).json({ status: 0, message: "Not enough arguments" });
+      res.status(400).json({ status: 0, message: 'Not enough arguments' });
     }
   })
 
@@ -108,24 +108,24 @@ module.exports = function (database) {
             // Insert into collection
             usersCollection.insertOne(newUser)
               .then(result => {
-                res.json({ status: 1, message: result });
+                res.json({ status: 1, message: 'Registered successfully!' });
               })
               .catch(err => {
                 console.log(err);
-                res.status(500).json({ status: -1, message: err });
+                res.status(500).json({ status: -1, message: 'Internal server error' });
               })
           }
           else {
-            res.status(400).json({ status: 0, message: "User already exists" });
+            res.status(400).json({ status: 0, message: 'User already exists' });
           }
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({ status: -1, message: err });
+          res.status(500).json({ status: -1, message: 'Internal server error' });
         });
     }
     else {
-      res.status(400).json({ status: 0, message: "Not enough arguments" });
+      res.status(400).json({ status: 0, message: 'Not enough arguments' });
     }
   });
 
@@ -152,23 +152,23 @@ module.exports = function (database) {
             }
             // Token is invalid or error verifying, likely expired, actual error is not important
             else {
-              res.status(403).send({ status: 0, message: "Invalid refresh token" })
+              res.status(403).send({ status: 0, message: 'Invalid refresh token' })
             }
           }
           // Token not found
           else {
             // Could respond with a 403, but 401 does not assume the input is a valid token
             // Could seperate into 400, 401, and 403, but it really is not important
-            res.status(401).json({ status: 0, message: "Invalid refresh token" });
+            res.status(401).json({ status: 0, message: 'Invalid refresh token' });
           }
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({ status: -1, message: err });
+          res.status(500).json({ status: -1, message: 'Internal server error' });
         })
     }
     else {
-      res.status(400).json({ status: 0, message: "No refresh token provided" });
+      res.status(400).json({ status: 0, message: 'No refresh token provided' });
     }
   });
 
@@ -183,21 +183,21 @@ module.exports = function (database) {
           // Check if refresh token found
           if (deleted.deletedCount === 1) {
             // Successful logout
-            res.json({ status: 1, message: deleted });
+            res.json({ status: 1, message: 'Logged out successfully!' });
           }
           // Token not found
           else {
             // Token does not exist in collection, so already "logged out"
-            res.status(401).json({ status: 0, message: "Invalid refresh token, already logged out" });
+            res.status(401).json({ status: 0, message: 'Invalid refresh token, already logged out' });
           }
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({ status: -1, message: err });
+          res.status(500).json({ status: -1, message: 'Internal server error' });
         })
     }
     else {
-      res.status(401).json({ status: 0, message: "Not logged in" });
+      res.status(401).json({ status: 0, message: 'Not logged in' });
     }
   });
 

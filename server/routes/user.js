@@ -141,12 +141,12 @@ module.exports = function (database) {
           })
           .catch(err => {
             console.log(err);
-            res.status(500).json({ status: -1, message: err });
+            res.status(500).json({ status: -1, message: 'Internal server error' });
           })
       })
       .catch(err => {
         console.log(err);
-        res.status(500).json({ status: -1, message: err });
+        res.status(500).json({ status: -1, message: 'Internal server error' });
       })
   });
 
