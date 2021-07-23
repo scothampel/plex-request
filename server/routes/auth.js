@@ -46,7 +46,8 @@ module.exports = function (database) {
               // Insert refresh token into refresh collection
               refreshCollection.insertOne({
                 user: found.user,
-                token: refresh
+                token: refresh,
+                createdAt: new Date()
               })
                 .catch(err => {
                   console.log(err);
