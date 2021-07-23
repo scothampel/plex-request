@@ -15,22 +15,31 @@ function App() {
   useEffect(() => {
     // First load, no token and page is loading
     if (!token && loading) {
-      fetch('/auth/refresh', {method: 'POST'})
+      // Fetch new token
+      refreshToken()
+      // Fetch complete, allow proper components to render
+      setLoading(false);
+    }
+  // Deps set so this fetch only runs when visiting the page for the first time
+  // Also runs on refresh, might also store auth token in a cookie to prevent this
+  }, [token, loading]);
+
+  const refreshToken = () => {
+    fetch('/auth/refresh', {method: 'POST'})
         .then(res => res.json())
         .then(data => {
           const { status, message } = data
           // Check if auth token is returned
           if (status === 1) {
             setToken(message)
+            return 1;
           }
-          // Fetch complete, allow proper components to render
-          setLoading(false);
+          else {
+            return 0;
+          }
         })
-        .catch(err => console.error('Internal Server Error', err));
-    }
-  // Deps set so this fetch only runs when visiting the page for the first time
-  // Also runs on refresh, might also store auth token in a cookie to prevent this
-  }, [token, loading]);
+        .catch(err => console.error('Could not fetch', err));
+  }
 
   // TODO: Loading splash screen instead of text
   return (
@@ -46,7 +55,7 @@ function App() {
           {token ? <Logout setToken={setToken} /> : <Redirect to='/' />}
         </Route>
         <Route path='/search'>
-          <Search token={token}/>
+          <Search token={token} refreshToken={refreshToken} />
         </Route>
         <Route path='/'>
           {/* Temp for testing */}
@@ -56,7 +65,7 @@ function App() {
               <Link to='/login'>Login</Link>
               <Link to='/register'>Register</Link>
               <Link to='/logout'>Logout</Link>
-              <Link to='/search'>Logout</Link>
+              <Link to='/search'>Search</Link>
               {token}
             </div>
           }
