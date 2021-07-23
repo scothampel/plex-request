@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-ro
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
-import '../css/App.css';
+import '../styles/App.css';
 
 function App() {
   const [token, setToken] = useState();

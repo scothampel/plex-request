@@ -1,4 +1,4 @@
-import '../css/Register.css';
+import '../styles/Register.css';
 
 export default function Register() {
   const handleSubmit = e => {
