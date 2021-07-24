@@ -36,7 +36,7 @@ export default function Result({ info, token }) {
           <div className='col-8'>
             <h3>{title}</h3>
             <p><i>{year}</i></p>
-            <span className='badge bg-primary'>{type.toUpperCase()}</span>
+            <span className={'badge ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}>{type.toUpperCase()}</span>
           </div>
           <div className='col-2 d-flex flex-column justify-content-center'>
             <button className='btn btn-success' onClick={handleClick}>Request</button>

@@ -25,7 +25,7 @@ export default function Requests({ token }) {
             if (type === 'info') {
               return <li key={index} className='list-group-item'>{title}</li>
             }
-            return <li key={index} className='list-group-item'><b>{title}</b> <i>{year || ''}</i><span className={'badge float-end ' + (type === 'tv' ? 'bg-success' : 'bg-primary')}>{type.toUpperCase()}</span></li>
+            return <li key={index} className='list-group-item'><b>{title}</b> <i>{year || ''}</i><span className={'badge float-end ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}>{type.toUpperCase()}</span></li>
           })
         }
     </ul>
