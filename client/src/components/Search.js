@@ -24,6 +24,7 @@ export default function Search({ token }) {
           .then(res => res.json())
           .then(data => {
             const { status, message } = data;
+            // Request successful, show results
             if (status === 1) {
               setResults(message);
             }
