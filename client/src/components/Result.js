@@ -27,15 +27,22 @@ export default function Result({ info, token }) {
 
   return (
     <div className='mb-3 row'>
-      <img src={poster} className='col-2' alt='poster'></img>
-      <div className='col-8'>
-        <h3>{title}</h3>
-        <p><i>{year}</i></p>
-        <span className='badge bg-primary'>{type.toUpperCase()}</span>
-      </div>
-      <div className='col-2 d-flex flex-column justify-content-center'>
-        <button className='btn btn-success' onClick={handleClick}>Request</button>
-      </div>
+      {type === 'info' && <h1>{title}</h1>}
+      {
+        type !== 'info' &&
+        <>
+          {/* TODO: Handle null poster */}
+          <img src={poster} className='col-2' alt='poster'></img>
+          <div className='col-8'>
+            <h3>{title}</h3>
+            <p><i>{year}</i></p>
+            <span className='badge bg-primary'>{type.toUpperCase()}</span>
+          </div>
+          <div className='col-2 d-flex flex-column justify-content-center'>
+            <button className='btn btn-success' onClick={handleClick}>Request</button>
+          </div>
+        </>
+      }
     </div>
   );
 }

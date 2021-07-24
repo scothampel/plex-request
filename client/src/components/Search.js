@@ -7,6 +7,7 @@ export default function Search({ token }) {
   const [results, setResults] = useState([]);
 
   const handleChange = (e) => {
+    setResults([{ title: 'Loading...', type: 'info' }]);
     // Get search query and encode
     const title = encodeURIComponent(e.target.value);
 
@@ -28,10 +29,13 @@ export default function Search({ token }) {
             if (status === 1) {
               setResults(message);
             }
+            else {
+              setResults([{ title: 'No results found', type: 'info' }]);
+            }
           })
           .catch(err => console.error('Could not fetch', err));
       }
-    }, 1000));
+    }, 750));
   }
 
   return (
