@@ -150,5 +150,20 @@ module.exports = function (database) {
       })
   });
 
+  // requests endpoint
+  // Get request
+  router.get('/requests', authJWTCallback, authorizedCallback, (req, res) => {
+    // Find all requests, project without _id or user
+    requestsCollection.find({}).project({ _id: 0, user: 0 }).toArray()
+      .then(result => {
+        // Not checking for length, will handle on the front-end
+        res.json(result)
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ status: -1, message: 'Internal server error' });
+      })
+  });
+
   return router;
 }
