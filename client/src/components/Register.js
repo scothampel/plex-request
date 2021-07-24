@@ -1,5 +1,6 @@
 import '../styles/Register.css';
 
+// TODO: redirect on register
 export default function Register() {
   const handleSubmit = e => {
     // Prevent submission
