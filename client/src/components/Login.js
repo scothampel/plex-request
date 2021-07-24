@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import '../styles/Login.css';
 
 export default function Login({ setToken, setNeedLogin }) {
@@ -48,7 +49,8 @@ export default function Login({ setToken, setNeedLogin }) {
           <label htmlFor='pass' className='form-label'>Password</label>
           <input type='password' className='form-control' id='pass' name='pass' required/>
         </div>
-        <button type="submit" className="btn btn-primary">Login</button>
+        <button type="submit" className="btn btn-primary me-3">Login</button>
+        <Link to='/register' className='btn btn-info'>Register</Link>
       </form>
     </div>
   )

@@ -89,12 +89,16 @@ function App() {
       {
         // No redirect so route in url stays the same
         // Except for /logout, otherwise loop occurs
+        // Except for /register, allow registration
         // When login is needed, ex. GET /request will just render <Login>
         // After login, main routes above will bring user back to /request 
         needLogin &&
         <Switch>
           <Route path='/logout'>
             <Redirect to='/login' />
+          </Route>
+          <Route path='/register'>
+            <Register />
           </Route>
           <Route path='/'>
             <Login setToken={setToken} setNeedLogin={setNeedLogin} />
