@@ -1,6 +1,6 @@
 import '../styles/Login.css';
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, setNeedLogin }) {
   const handleSubmit = e => {
     // Prevent submission
     e.preventDefault();
@@ -25,6 +25,7 @@ export default function Login({ setToken }) {
           case 1:
             // Set token
             setToken(message)
+            setNeedLogin(false);
             break;
           // Bad input
           case 0:
