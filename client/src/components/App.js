@@ -6,6 +6,7 @@ import Logout from './Logout';
 import '../styles/App.css';
 import Search from './Search';
 import Requests from './Requests';
+import Dashboard from './Dashboard';
 
 function App() {
   const [token, setToken] = useState();
@@ -69,12 +70,6 @@ function App() {
           <Route path='/logout'>
             {token ? <Logout setToken={setToken} setNeedLogin={setNeedLogin} /> : <Redirect to='/' />}
           </Route>
-          <Route path='/search'>
-            <Search token={token} />
-          </Route>
-          <Route path='/requests'>
-            <Requests token={token} />
-          </Route>
           <Route path='/'>
             {/* Temp for testing */}
             {token &&
@@ -82,9 +77,8 @@ function App() {
                 <Link to='/login'>Login</Link>
                 <Link to='/register'>Register</Link>
                 <Link to='/logout'>Logout</Link>
-                <Link to='/search'>Search</Link>
-                <Link to='/requests'>Requests</Link>
                 {token}
+                <Dashboard token={token} />
               </div>
             }
             {!loading && !token && <Redirect to='/login' />}
