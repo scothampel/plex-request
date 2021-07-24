@@ -13,10 +13,12 @@ export default function Search({ token }) {
 
     // Clear timeout if it already exists
     if (timer) clearTimeout(timer);
-    // Set timer state var with timeout id
-    // setTimeout used to prevent multiple requests to /user/search
-    setTimer(setTimeout(() => {
-      if (title.length !== 0) {
+
+    // Only start timer if length there is a query
+    if (title.length !== 0) {
+      // Set timer state var with timeout id
+      // setTimeout used to prevent multiple requests to /user/search
+      setTimer(setTimeout(() => {
         fetch(`/user/search?q=${title}`, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -34,8 +36,13 @@ export default function Search({ token }) {
             }
           })
           .catch(err => console.error('Could not search', err));
-      }
-    }, 750));
+      }, 750));
+    }
+    // Empty query
+    else {
+      // Remove loading message
+      setResults([]);
+    }
   }
 
   return (
