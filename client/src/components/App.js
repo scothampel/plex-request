@@ -63,7 +63,7 @@ function App() {
             {token ? <Redirect to='/' /> : <Login setToken={setToken} setNeedLogin={setNeedLogin} />}
           </Route>
           <Route path='/register'>
-            <Register />
+            {token ? <Redirect to='/' /> : <Register />}
           </Route>
           <Route path='/logout'>
             {token ? <Logout setToken={setToken} setNeedLogin={setNeedLogin} /> : <Redirect to='/' />}

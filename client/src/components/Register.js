@@ -29,15 +29,13 @@ export default function Register() {
             break;
           // Bad input
           case 0:
-            console.error(message);
-            break;
           // Server error
           default:
-            console.error('Internal Server Error', message);
+            console.error(message);
             break;
         }
       })
-      .catch(err => console.error('Internal Server Error', err));
+      .catch(err => console.error('Could not register', err));
   }
 
   return (
