@@ -33,7 +33,7 @@ export default function Search({ token }) {
               setResults([{ title: 'No results found', type: 'info' }]);
             }
           })
-          .catch(err => console.error('Could not fetch', err));
+          .catch(err => console.error('Could not search', err));
       }
     }, 750));
   }

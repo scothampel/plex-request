@@ -19,6 +19,7 @@ export default function Login({ setToken, setNeedLogin }) {
     })
       .then(res => res.json())
       .then(data => {
+        // TODO: proper alerts
         const { status, message } = data;
         switch (status) {
           // Successful login
@@ -27,17 +28,13 @@ export default function Login({ setToken, setNeedLogin }) {
             setToken(message)
             setNeedLogin(false);
             break;
-          // Bad input
-          case 0:
-            console.error(message);
-            break;
-          // Server error
+          // Bad input case 0, server error case -1
           default:
-            console.error('Internal Server Error', message);
+            console.error(message);
             break;
         }
       })
-      .catch(err => console.error('Internal Server Error', err));
+      .catch(err => console.error('Could not login', err));
   }
 
   return (

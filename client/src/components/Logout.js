@@ -8,7 +8,7 @@ export default function Logout({ setToken, setNeedLogin }) {
     setToken(null);
     setNeedLogin(true);
     fetch('/auth/logout', {method: 'POST'})
-      .catch(err => console.error('Internal Server Error', err));
+      .catch(err => console.error('Could not logout', err));
   })
 
   return (<></>)

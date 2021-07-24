@@ -20,16 +20,14 @@ export default function Register() {
     })
       .then(res => res.json())
       .then(data => {
+        // TODO: proper alerts
         const { status, message } = data;
         switch (status) {
           // Successful register
           case 1:
-            // TODO: HTML alert
             alert('Successfully registered!');
             break;
-          // Bad input
-          case 0:
-          // Server error
+          // Bad input case 0, server error case -1
           default:
             console.error(message);
             break;
