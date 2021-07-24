@@ -5,6 +5,7 @@ import Register from './Register';
 import Logout from './Logout';
 import '../styles/App.css';
 import Search from './Search';
+import Requests from './Requests';
 
 function App() {
   const [token, setToken] = useState();
@@ -69,7 +70,10 @@ function App() {
             {token ? <Logout setToken={setToken} setNeedLogin={setNeedLogin} /> : <Redirect to='/' />}
           </Route>
           <Route path='/search'>
-            <Search token={token} refreshToken={refreshToken} />
+            <Search token={token} />
+          </Route>
+          <Route path='/requests'>
+            <Requests token={token} />
           </Route>
           <Route path='/'>
             {/* Temp for testing */}
@@ -79,6 +83,7 @@ function App() {
                 <Link to='/register'>Register</Link>
                 <Link to='/logout'>Logout</Link>
                 <Link to='/search'>Search</Link>
+                <Link to='/requests'>Requests</Link>
                 {token}
               </div>
             }
