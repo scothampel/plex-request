@@ -50,7 +50,7 @@ export default function Login({ setToken, setNeedLogin }) {
           <input type='password' className='form-control' id='pass' name='pass' required/>
         </div>
         <button type="submit" className="btn btn-primary me-3">Login</button>
-        <Link to='/register' className='btn btn-info'>Register</Link>
+        <Link to='/register'>Need an Account? Register here</Link>
       </form>
     </div>
   )

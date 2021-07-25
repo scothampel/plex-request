@@ -1,4 +1,5 @@
 import '../styles/Register.css';
+import { Link } from 'react-router-dom';
 
 // TODO: redirect on register
 export default function Register() {
@@ -52,7 +53,8 @@ export default function Register() {
           <label htmlFor='pass' className='form-label'>Password</label>
           <input type='password' className='form-control' id='pass' name='pass' required />
         </div>
-        <button type="submit" className="btn btn-primary">Register</button>
+        <button type="submit" className="btn btn-primary me-3">Register</button>
+        <Link to='/login'>Already have an Account? Login here</Link>
       </form>
     </div>
   )
