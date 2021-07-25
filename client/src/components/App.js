@@ -4,8 +4,6 @@ import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
 import '../styles/App.css';
-import Search from './Search';
-import Requests from './Requests';
 import Dashboard from './Dashboard';
 
 function App() {
@@ -37,7 +35,7 @@ function App() {
 
   // Async/await because of fetch
   const refreshToken = async () => {
-    return await fetch('/auth/refresh', { method: 'POST' })
+    await fetch('/auth/refresh', { method: 'POST' })
       .then(res => res.json())
       .then(data => {
         const { status, message } = data
