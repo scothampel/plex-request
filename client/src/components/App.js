@@ -16,6 +16,27 @@ function App() {
   // Pull new token if refesh cookie is set (logged in)
   // Can not check for refresh cookie, as it is httpOnly
   useEffect(() => {
+    // Async/await because of fetch
+    const refreshToken = async () => {
+      // Only try to refresh if already logged in
+      if (!needLogin) {
+        await fetch('/auth/refresh', { method: 'POST' })
+          .then(res => res.json())
+          .then(data => {
+            const { status, message } = data
+            // Check if auth token is returned
+            if (status === 1) {
+              setToken(message)
+            }
+            // No token returned, need to login again
+            else {
+              setNeedLogin(true);
+            }
+          })
+          .catch(err => console.error('Could not fetch', err));
+      }
+    }
+
     // First load, no token and page is loading
     if (!token && loading) {
       // Fetch new token
@@ -31,28 +52,7 @@ function App() {
     }
     // Deps set so this fetch only runs when visiting the page for the first time
     // Also runs on refresh, might also store auth token in a cookie to prevent this
-  }, [token, loading]);
-
-  // Async/await because of fetch
-  const refreshToken = async () => {
-    // Only try to refresh if already logged in
-    if (!needLogin) {
-      await fetch('/auth/refresh', { method: 'POST' })
-      .then(res => res.json())
-      .then(data => {
-        const { status, message } = data
-        // Check if auth token is returned
-        if (status === 1) {
-          setToken(message)
-        }
-        // No token returned, need to login again
-        else {
-          setNeedLogin(true);
-        }
-      })
-      .catch(err => console.error('Could not fetch', err));
-    }
-  }
+  }, [token, loading, needLogin]);
 
   return (
     <Router>
