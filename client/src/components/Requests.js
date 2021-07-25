@@ -4,6 +4,7 @@ import '../styles/Requests.css';
 export default function Requests({ token }) {
   const [requests, setRequests] = useState([{title: 'Loading...', type: 'info'}]);
 
+  // TODO: fetches every 4m55s because of token refresh, probably change this
   useEffect(() => {
     fetch('/user/requests', {
       headers: {
@@ -14,7 +15,7 @@ export default function Requests({ token }) {
       .then(data => {
         setRequests(data)
       })
-  }, [token])
+  },[token])
 
   return (
     <ul className="list-group">
