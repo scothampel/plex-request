@@ -179,7 +179,13 @@ module.exports = function (database) {
     const token = req.cookies.refresh;
     if (token) {
       // Tell browser to expire cookie
-      res.cookie('refresh', '', { maxAge: 0 });
+      res.cookie('refresh', '', {
+        maxAge: 0,
+        path: '/auth',
+        sameSite: 'Lax',
+        httpOnly: true,
+        secure: true
+      });
 
       // Delete token in refresh collection
       refreshCollection.deleteOne({ token })
