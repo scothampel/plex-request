@@ -18,7 +18,7 @@ export default function Requests({ token }) {
   },[token])
 
   return (
-    <ul className="list-group">
+    <ul className="list-group mb-3">
       {
           requests.map((val, index) => {
             const { title, type, year } = val;
