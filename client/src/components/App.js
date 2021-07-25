@@ -35,7 +35,9 @@ function App() {
 
   // Async/await because of fetch
   const refreshToken = async () => {
-    await fetch('/auth/refresh', { method: 'POST' })
+    // Only try to refresh if already logged in
+    if (!needLogin) {
+      await fetch('/auth/refresh', { method: 'POST' })
       .then(res => res.json())
       .then(data => {
         const { status, message } = data
@@ -49,6 +51,7 @@ function App() {
         }
       })
       .catch(err => console.error('Could not fetch', err));
+    }
   }
 
   return (
