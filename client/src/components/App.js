@@ -75,10 +75,6 @@ function App() {
             {/* Temp for testing */}
             {token &&
               <div>
-                <Link to='/login'>Login</Link>
-                <Link to='/register'>Register</Link>
-                <Link to='/logout'>Logout</Link>
-                {token}
                 <Dashboard token={token} />
               </div>
             }
