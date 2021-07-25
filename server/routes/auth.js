@@ -39,14 +39,14 @@ module.exports = function (database) {
               // Generate JWT refresh
               const refresh = jwt.sign({
                 user: found.user,
-                role: found.role,
-                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress
+                role: found.role
               }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
 
               // Insert refresh token into refresh collection
               refreshCollection.insertOne({
                 user: found.user,
                 token: refresh,
+                ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
                 createdAt: new Date()
               })
                 .catch(err => {
