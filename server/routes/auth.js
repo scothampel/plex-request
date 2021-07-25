@@ -54,8 +54,8 @@ module.exports = function (database) {
                   res.status(500).json({ status: -1, message: 'Internal server error' });
                 })
 
-              // Store refresh token in HttpOnly cookie with 7d expiration, only send to /auth/refresh
-              //res.header('Set-Cookie', `refresh=${refresh}; Max-Age=604800; path=/auth/refresh; SameSite=Lax; Secure; HttpOnly`)
+              // Store refresh token in HttpOnly cookie with 7d expiration, only send to /auth
+              //res.header('Set-Cookie', `refresh=${refresh}; Max-Age=604800; path=/auth; SameSite=Lax; Secure; HttpOnly`)
               res.cookie('refresh', refresh, {
                 maxAge: 7 * 24 * 60 * 60 * 1000,
                 path: '/auth',
@@ -178,6 +178,9 @@ module.exports = function (database) {
   router.post('/logout', (req, res) => {
     const token = req.cookies.refresh;
     if (token) {
+      // Tell browser to expire cookie
+      res.cookie('refresh', '', { maxAge: 0 });
+
       // Delete token in refresh collection
       refreshCollection.deleteOne({ token })
         .then(deleted => {
