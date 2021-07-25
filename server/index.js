@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const path = require('path');
 const { MongoClient } = require('mongodb');
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 // Environment vars and defaults
 const PORT = parseInt(process.env.PORT) || 3001;
@@ -16,6 +17,7 @@ const DB_PORT = parseInt(process.env.DB_PORT);
 const DB_COLLECTIONS_USERS = process.env.DB_COLLECTIONS_USERS;
 const DB_COLLECTIONS_REFRESH = process.env.DB_COLLECTIONS_REFRESH;
 const DB_COLLECTIONS_REQUESTS = process.env.DB_COLLECTIONS_REQUESTS;
+const JWT_AUTH_SECRET = process.env.JWT_AUTH_SECRET;
 
 // Mongodb connect string
 const mongodbStr = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}`;
@@ -29,6 +31,29 @@ app.use(cors());
 app.use(helmet());
 // Serve static react front-end
 app.use(express.static(path.join(__dirname, '../client/build')));
+
+// JWT auth callback
+const authJWTCallback = (req, res, next) => {
+  const header = req.headers.authorization;
+  if (header) {
+    // Pull token from header and verify it
+    const token = header.split(' ')[1];
+    const auth = jwt.verify(token, JWT_AUTH_SECRET, (err, data) => err ? false : data);
+
+    // If verified, attach token body to req
+    if (auth) {
+      req.data = auth;
+      next();
+    }
+    // Token invalid, likely expired, request refresh
+    else {
+      res.status(403).json({ status: 0, message: 'Invalid token' });
+    }
+  }
+  else {
+    res.status(401).json({ status: 0, message: 'No authorization token supplied' });
+  }
+}
 
 // Only accessible if MongoDB is reachable
 MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10000 })
@@ -49,7 +74,7 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     
     // Router modules
     app.use('/auth', auth);
-    app.use('/user', user);
+    app.use('/user', authJWTCallback, user);
 
     // Get request wildcard, send index.html to allow react router routes
     app.get('*', (req, res) => {

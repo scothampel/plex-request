@@ -1,43 +1,15 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const fetch = require('node-fetch');
 const router = express.Router();
 
 // Environment vars
-const JWT_AUTH_SECRET = process.env.JWT_AUTH_SECRET;
 const TMDB_TOKEN = process.env.TMDB_TOKEN;
-
-// JWT auth function
-const authJWT = (token, secret) => jwt.verify(token, secret, (err, data) => err ? false : data);
-// JWT auth callback
-const authJWTCallback = (req, res, next) => {
-  const header = req.headers.authorization;
-  if (header) {
-    // Pull token from header and verify it
-    const token = header.split(' ')[1];
-    const auth = authJWT(token, JWT_AUTH_SECRET);
-
-    // If verified, attach token body to req
-    if (auth) {
-      req.data = auth;
-      next();
-    }
-    // Token invalid, likely expired, request refresh
-    else {
-      res.status(403).json({ status: 0, message: 'Invalid token' });
-    }
-  }
-  else {
-    res.status(401).json({ status: 0, message: 'No authorization token supplied' });
-  }
-}
 
 // Authorized callback
 const authorizedCallback = (req, res, next) => {
   // Check role, continue if account is not unconfirmed
   req.data.role !== 'unconfirmed' ? next() : res.status(403).json({ status: 0, message: 'Please have an admin confirm your account' });
 }
-
 
 module.exports = function (database) {
   // Destructure database object
@@ -48,7 +20,7 @@ module.exports = function (database) {
   // title: String
   // year: String
   // type: String
-  router.post('/request', authJWTCallback, authorizedCallback, (req, res) => {
+  router.post('/request', authorizedCallback, (req, res) => {
     const { user } = req.data;
     const { title, type, year } = req.body;
 
@@ -90,7 +62,7 @@ module.exports = function (database) {
   // search endpoint
   // Get request
   // q: String
-  router.get('/search', authJWTCallback, authorizedCallback, (req, res) => {
+  router.get('/search', authorizedCallback, (req, res) => {
     const searchQuery = req.query ? req.query.q || '' : '';
 
     // Fetch tvdb config
@@ -152,7 +124,7 @@ module.exports = function (database) {
 
   // requests endpoint
   // Get request
-  router.get('/requests', authJWTCallback, authorizedCallback, (req, res) => {
+  router.get('/requests', authorizedCallback, (req, res) => {
     // Find all requests, project without _id or user
     requestsCollection.find({}).project({ _id: 0, user: 0 }).toArray()
       .then(result => {
