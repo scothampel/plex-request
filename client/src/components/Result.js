@@ -35,8 +35,8 @@ export default function Result({ info, token }) {
           <div className='col-md-2 d-none d-md-block text-center'>
             <img src={poster} alt='poster'></img>
           </div>
-          <div className='col-8 col-md-7'>
-            <span className='d-block'><span className='h3'>{title} </span><i>{year}</i></span>
+          <div className='col-8'>
+            <span className='d-block'><span className='h6'>{title} </span><i>{year}</i></span>
             <span className={'badge ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}>{type.toUpperCase()}</span>
           </div>
           <div className='col-4 col-md-2 d-flex flex-column justify-content-center'>
