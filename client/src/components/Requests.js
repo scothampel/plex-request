@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../styles/Requests.css';
 
-export default function Requests({ token, role }) {
+export default function Requests({ token, role, newRequest }) {
   const [requests, setRequests] = useState([{ title: 'Loading...', type: 'info' }]);
 
   useEffect(() => {
@@ -26,6 +26,16 @@ export default function Requests({ token, role }) {
         })
     }
   }, [token, requests])
+
+  // Update requests after current user makes request
+  useEffect(() => {
+    if (newRequest) {
+      // Check if request already exists in list
+      if (requests.filter(val => val.title === newRequest.title && val.type === newRequest.type).length === 0) {
+        setRequests([...requests, newRequest]);
+      }
+    }
+  }, [requests, newRequest])
 
   const handleClick = e => {
     // Get request id from target dataset

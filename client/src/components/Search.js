@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../styles/Search.css';
 import Result from './Result';
 
-export default function Search({ token }) {
+export default function Search({ token, setNewRequest }) {
   const [timer, setTimer] = useState();
   const [results, setResults] = useState([]);
 
@@ -54,7 +54,7 @@ export default function Search({ token }) {
       <div className='mb-3 container'>
         {
           results.map((val, index) => {
-            return <Result key={index} info={val} token={token} />
+            return <Result key={index} info={val} token={token} setNewRequest={setNewRequest} />
           })
         }
       </div>

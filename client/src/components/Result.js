@@ -1,6 +1,6 @@
 import '../styles/Result.css';
 
-export default function Result({ info, token }) {
+export default function Result({ info, token, setNewRequest }) {
   // Destructure info prop
   const { title, type, year, poster } = info;
 
@@ -18,6 +18,10 @@ export default function Result({ info, token }) {
       .then(data => {
         // TODO: proper alerts
         const { status, message } = data;
+        // Tell requests the new request
+        if (status === 1) {
+          setNewRequest({ title, type, year });
+        }
         if (status !== -1) {
           alert(message);
         }
