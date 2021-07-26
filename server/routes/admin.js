@@ -51,7 +51,16 @@ module.exports = function (database) {
             if (matchedCount) {
               // Check that role was updated
               if (modifiedCount) {
-                res.json({ status: 1, message: 'User role updated' });
+                // Log user out of all sessions to update role, max TTL 5min
+                refreshCollection.deleteMany({ user })
+                  .then(() => {
+                    // No checks for deletion, as user may or may not be logged in currently
+                    res.json({ status: 1, message: 'User role updated' });
+                  })
+                  .catch(err => {
+                    console.error(err);
+                    res.status(500).json({ status: -1, message: 'Internal server error' });
+                  })
               }
               else {
                 res.status(400).json({ status: 0, message: 'User is already that role' });
