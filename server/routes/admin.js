@@ -22,7 +22,7 @@ module.exports = function (database) {
     usersCollection.find({}).project({ _id: 0, pass: 0 }).toArray()
       .then(result => {
         // Not checking for length, will handle on the front-end
-        res.json(result)
+        res.json({ status: 1, message: result });
       })
       .catch(err => {
         console.log(err);
