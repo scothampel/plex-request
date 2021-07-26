@@ -48,7 +48,7 @@ function App() {
       // Store interval so login can cancel it
       setRefreshTimer(setInterval(() => {
         refreshToken()
-      }, ((4 * 60) + 55) * 10))
+      }, ((4 * 60) + 55) * 1000))
 
       // First page load
       if (!token) {
