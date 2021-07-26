@@ -71,10 +71,12 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     // Express routes
     const auth = require('./routes/auth')(database);
     const user = require('./routes/user')(database);
+    const admin = require('./routes/admin')(database);
     
     // Router modules
     app.use('/auth', auth);
     app.use('/user', authJWTCallback, user);
+    app.use('/admin', authJWTCallback, admin);
 
     // Get request wildcard, send index.html to allow react router routes
     app.get('*', (req, res) => {
