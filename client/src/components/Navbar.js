@@ -3,7 +3,7 @@ import '../styles/Navbar.css';
 
 export default function Navbar({ role }) {
   return (
-    <nav className='navbar navbar-light bg-light'>
+    <nav className='navbar navbar-light bg-light mb-3'>
       <div className='container-fluid'>
         <Link to='/' className='navbar-brand'>Plex Requests</Link>
         <div>
