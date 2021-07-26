@@ -93,11 +93,11 @@ module.exports = function (database) {
     const { id } = req.body;
 
     if (id) {
+      // Regex for hex string and for length of 24 only
+      const hexRe = /^[0-9A-Fa-f]{24}$/g;
       // Check if id is properly formatted for ObjectId
       // Verify id is a 12 byte hex value (24 chars)
-      // OR
-      // Verify id is a 12 byte string
-      if ((parseInt(id, 16).toString(16) === id && id.length === 24) || id.length === 12) {
+      if (hexRe.test(id)) {
         requestsCollection.deleteOne({ id: ObjectId(id) })
           .then(deleted => {
             // Destructure result to get status
