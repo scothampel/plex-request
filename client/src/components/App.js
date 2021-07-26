@@ -29,12 +29,17 @@ function App() {
             if (status === 1) {
               setToken(message.token);
               setRole(message.role);
+
+              // Prevent loop on unconfirmed user
+              if (message.role === 'unconfirmed') {
+                setNeedLogin(true);
+              }
             }
             // No token returned, need to login again
             else {
               setNeedLogin(true);
             }
-            
+
             // Fetch complete, allow proper components to render
             setLoading(false);
           })
@@ -88,10 +93,10 @@ function App() {
         // Except for /register, allow registration
         // When login is needed, ex. GET /request will just render <Login>
         // After login, main routes above will bring user back to /request 
-        (needLogin || role === 'unconfirmed') &&
+        (needLogin) &&
         <Switch>
           <Route path='/logout'>
-            <Redirect to='/login' />
+            {role === 'unconfirmed' ? <Logout setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} /> : <Redirect to='/login' />}
           </Route>
           <Route path='/register'>
             <Register />

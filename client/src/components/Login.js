@@ -9,7 +9,7 @@ export default function Login({ setToken, role, setRole, setNeedLogin, refreshTi
     clearInterval(refreshTimer);
     setRefreshTimer(null);
   });
-  
+
   const handleSubmit = e => {
     // Prevent submission
     e.preventDefault();
@@ -36,7 +36,13 @@ export default function Login({ setToken, role, setRole, setNeedLogin, refreshTi
             // Set token
             setToken(message.token)
             setRole(message.role)
+            // Needed for when unconfirmed user relogs after confirmation
             setNeedLogin(false);
+
+            // Prevent loop on unconfirmed user
+            if (message.role === 'unconfirmed') {
+              setNeedLogin(true);
+            }
             break;
           // Bad input case 0, server error case -1
           default:
@@ -61,8 +67,8 @@ export default function Login({ setToken, role, setRole, setNeedLogin, refreshTi
         <button type="submit" className="btn btn-primary me-3">Login</button>
         <Link to='/register'>Need an Account? Register here</Link>
       </form>
-        {/* Confirmation needed message */}
-        { role === 'unconfirmed' && <div className='alert alert-warning'>Please have an admin confirm your account. Then login again.</div> }
+      {/* Confirmation needed message */}
+      {role === 'unconfirmed' && <div className='alert alert-warning'>Please have an admin confirm your account. Then login again.</div>}
     </div>
   )
 }
