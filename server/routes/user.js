@@ -132,7 +132,7 @@ module.exports = function (database) {
     requestsCollection.find({}).project({ user: 0 }).toArray()
       .then(result => {
         // Not checking for length, will handle on the front-end
-        res.json(result)
+        res.json({ status: 1, message: result });
       })
       .catch(err => {
         console.log(err);

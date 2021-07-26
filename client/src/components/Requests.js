@@ -13,7 +13,13 @@ export default function Requests({ token }) {
     })
       .then(res => res.json())
       .then(data => {
-        setRequests(data)
+        const { status, message } = data;
+        if (status === 1) {
+          setRequests(message);
+        }
+        else {
+          setRequests([{ title: 'There are currently no requests', type: 'info' }]);
+        }
       })
   },[token])
 
