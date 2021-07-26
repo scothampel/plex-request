@@ -98,7 +98,7 @@ module.exports = function (database) {
       // Check if id is properly formatted for ObjectId
       // Verify id is a 12 byte hex value (24 chars)
       if (hexRe.test(id)) {
-        requestsCollection.deleteOne({ id: ObjectId(id) })
+        requestsCollection.deleteOne({ _id: ObjectId(id) })
           .then(deleted => {
             // Destructure result to get status
             const { deletedCount } = deleted;
