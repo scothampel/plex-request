@@ -1,6 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const router = express.Router();
+const ObjectId = require('mongodb').ObjectId;
 
 // Environment vars
 const TMDB_TOKEN = process.env.TMDB_TOKEN;
@@ -40,7 +41,7 @@ module.exports = function (database) {
             // Submit request
             requestsCollection.insertOne({ ...req.body, user })
               .then(result => {
-                res.json({ status: 1, message: 'Request submitted successfully!' });
+                res.json({ status: 1, message: result });
               })
               .catch(err => {
                 console.log(err);

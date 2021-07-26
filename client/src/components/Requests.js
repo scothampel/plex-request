@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../styles/Requests.css';
 
-export default function Requests({ token, role, newRequest }) {
+export default function Requests({ token, role, newRequest, setNewRequest }) {
   const [requests, setRequests] = useState([{ title: 'Loading...', type: 'info' }]);
 
   useEffect(() => {
@@ -40,6 +40,9 @@ export default function Requests({ token, role, newRequest }) {
   const handleClick = e => {
     // Get request id from target dataset
     const { id } = e.target.dataset;
+
+    // Prevent most recent request from reappearing
+    setNewRequest(null)
 
     fetch('/admin/request', {
       method: 'DELETE',
