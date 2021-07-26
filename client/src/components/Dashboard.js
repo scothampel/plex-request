@@ -10,7 +10,7 @@ export default function Dashboard({ token, role }) {
       <Navbar />
       <div className='container'>
         <Search token={token} />
-        <Requests token={token} />
+        <Requests token={token} role={role} />
         {role === 'admin' && <Users token={token} />}
       </div>
     </>

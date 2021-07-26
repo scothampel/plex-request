@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../styles/Requests.css';
 
-export default function Requests({ token }) {
+export default function Requests({ token, role }) {
   const [requests, setRequests] = useState([{ title: 'Loading...', type: 'info' }]);
 
   useEffect(() => {
@@ -27,12 +27,41 @@ export default function Requests({ token }) {
     }
   }, [token, requests])
 
+  const handleClick = e => {
+    // Get request id from target dataset
+    const { id } = e.target.dataset;
+
+    fetch('/admin/request', {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({ id })
+    })
+      .then(res => res.json())
+      .then(data => {
+        const { status, message } = data;
+
+        if (status === 1) {
+          // Update request list on front-end
+          setRequests(requests.filter(val => val._id !== id));
+        }
+        else {
+          // No other handling here, front-end shouldn't allow for errors
+          // Still notify just incase
+          console.error(message)
+        }
+      })
+      .catch(err => console.error('Could not change role', err));
+  }
+
   return (
     <ul className="list-group mb-3">
       <li className='list-group-item bg-light'><h3>Current Requests</h3></li>
       {
         requests.map((val, index) => {
-          const { title, type, year } = val;
+          const { _id, title, type, year } = val;
           // Loading state
           if (type === 'info') {
             return <li key={index} className='list-group-item'>{title}</li>
@@ -41,6 +70,7 @@ export default function Requests({ token }) {
             <li key={index} className='list-group-item'>
               <b>{title} </b>
               <i>{year || ''}</i>
+              {role === 'admin' && <button type='button' className='btn btn-sm btn-warning float-end ms-3' onClick={handleClick} data-id={_id} >Remove</button>}
               <span className={'badge float-end ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}>{type.toUpperCase()}</span>
             </li>
           )
