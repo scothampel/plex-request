@@ -13,7 +13,6 @@ function App() {
   // Can't only use token as login needed
   // Refresh token could have exp while window is open
   const [needLogin, setNeedLogin] = useState(false);
-  const [refreshTimer, setRefreshTimer] = useState();
 
   // Pull new token if refesh cookie is set (logged in)
   // Can not check for refresh cookie, as it is httpOnly
@@ -50,9 +49,9 @@ function App() {
           // Interval of 4m55s to auto refresh token
           // Store interval so login can cancel it
           // Not used in logout, as login renders immediately after
-          setRefreshTimer(setInterval(() => {
+          setInterval(() => {
             refreshToken()
-          }, ((4 * 60) + 55) * 1000));
+          }, ((4 * 60) + 55) * 1000);
         })
     }
     // Deps set so this fetch only runs when visiting the page for the first time
@@ -68,13 +67,13 @@ function App() {
         !needLogin && !loading && role !== 'unconfirmed' &&
         <Switch>
           <Route path='/login'>
-            {token ? <Redirect to='/' /> : <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} refreshTimer={refreshTimer} />}
+            {token ? <Redirect to='/' /> : <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} />}
           </Route>
           <Route path='/register'>
             {token ? <Redirect to='/' /> : <Register />}
           </Route>
           <Route path='/logout'>
-            {token ? <Logout setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} refreshTimer={refreshTimer} /> : <Redirect to='/' />}
+            {token ? <Logout setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} /> : <Redirect to='/' />}
           </Route>
           <Route path='/'>
             {/* Temp for testing */}
@@ -102,7 +101,7 @@ function App() {
             <Register />
           </Route>
           <Route path='/'>
-            <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} refreshTimer={refreshTimer} />
+            <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} />
           </Route>
         </Switch>
       }
