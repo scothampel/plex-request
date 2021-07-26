@@ -63,7 +63,7 @@ module.exports = function (database) {
                 httpOnly: true,
                 secure: true
               });
-              res.json({ status: 1, message: token });
+              res.json({ status: 1, message: { token, role: found.role } });
             }
             // Incorrect password
             else {
@@ -149,7 +149,7 @@ module.exports = function (database) {
                 role: valid.role
               }, JWT_AUTH_SECRET, { expiresIn: '5m' });
 
-              res.json({ status: 1, message: token });
+              res.json({ status: 1, message: { token, role: valid.role } });
             }
             // Token is invalid or error verifying, likely expired, actual error is not important
             else {

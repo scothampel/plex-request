@@ -8,6 +8,7 @@ import Dashboard from './Dashboard';
 
 function App() {
   const [token, setToken] = useState();
+  const [role, setRole] = useState();
   const [loading, setLoading] = useState(true);
   // Can't only use token as login needed
   // Refresh token could have exp while window is open
@@ -26,7 +27,8 @@ function App() {
             const { status, message } = data
             // Check if auth token is returned
             if (status === 1) {
-              setToken(message)
+              setToken(message.token);
+              setRole(message.role);
             }
             // No token returned, need to login again
             else {
@@ -63,19 +65,19 @@ function App() {
         !needLogin && !loading &&
         <Switch>
           <Route path='/login'>
-            {token ? <Redirect to='/' /> : <Login setToken={setToken} setNeedLogin={setNeedLogin} />}
+            {token ? <Redirect to='/' /> : <Login setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} />}
           </Route>
           <Route path='/register'>
             {token ? <Redirect to='/' /> : <Register />}
           </Route>
           <Route path='/logout'>
-            {token ? <Logout setToken={setToken} setNeedLogin={setNeedLogin} /> : <Redirect to='/' />}
+            {token ? <Logout setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} /> : <Redirect to='/' />}
           </Route>
           <Route path='/'>
             {/* Temp for testing */}
             {token &&
               <div>
-                <Dashboard token={token} />
+                <Dashboard token={token} role={role} />
               </div>
             }
             {!loading && !token && <Redirect to='/login' />}
@@ -97,7 +99,7 @@ function App() {
             <Register />
           </Route>
           <Route path='/'>
-            <Login setToken={setToken} setNeedLogin={setNeedLogin} />
+            <Login setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} />
           </Route>
         </Switch>
       }

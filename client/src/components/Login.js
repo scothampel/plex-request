@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import '../styles/Login.css';
 
-export default function Login({ setToken, setNeedLogin }) {
+export default function Login({ setToken, setRole, setNeedLogin }) {
   const handleSubmit = e => {
     // Prevent submission
     e.preventDefault();
@@ -26,7 +26,8 @@ export default function Login({ setToken, setNeedLogin }) {
           // Successful login
           case 1:
             // Set token
-            setToken(message)
+            setToken(message.token)
+            setRole(message.role)
             setNeedLogin(false);
             break;
           // Bad input case 0, server error case -1
