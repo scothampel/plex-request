@@ -25,7 +25,7 @@ export default function Requests({ token }) {
           }
         })
     }
-  },[token])
+  },[token, requests])
 
   return (
     <ul className="list-group mb-3">
