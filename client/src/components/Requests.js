@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import '../styles/Requests.css';
 
 export default function Requests({ token }) {
-  const [requests, setRequests] = useState([{title: 'Loading...', type: 'info'}]);
+  const [requests, setRequests] = useState([{ title: 'Loading...', type: 'info' }]);
 
   useEffect(() => {
     // Check if no requests have been fetched yet
@@ -25,21 +25,27 @@ export default function Requests({ token }) {
           }
         })
     }
-  },[token, requests])
+  }, [token, requests])
 
   return (
     <ul className="list-group mb-3">
       <li className='list-group-item bg-light'><h3>Current Requests</h3></li>
       {
-          requests.map((val, index) => {
-            const { title, type, year } = val;
-            // Loading state
-            if (type === 'info') {
-              return <li key={index} className='list-group-item'>{title}</li>
-            }
-            return <li key={index} className='list-group-item'><b>{title}</b> <i>{year || ''}</i><span className={'badge float-end ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}>{type.toUpperCase()}</span></li>
-          })
-        }
+        requests.map((val, index) => {
+          const { title, type, year } = val;
+          // Loading state
+          if (type === 'info') {
+            return <li key={index} className='list-group-item'>{title}</li>
+          }
+          return (
+            <li key={index} className='list-group-item'>
+              <b>{title} </b>
+              <i>{year || ''}</i>
+              <span className={'badge float-end ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}>{type.toUpperCase()}</span>
+            </li>
+          )
+        })
+      }
     </ul>
   );
 }
