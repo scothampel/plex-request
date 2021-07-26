@@ -5,6 +5,7 @@ import Register from './Register';
 import Logout from './Logout';
 import '../styles/App.css';
 import Dashboard from './Dashboard';
+import Admin from './Admin';
 
 function App() {
   const [token, setToken] = useState();
@@ -77,14 +78,11 @@ function App() {
           <Route path='/logout'>
             {token ? <Logout setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} /> : <Redirect to='/' />}
           </Route>
+          <Route path='/admin'>
+            {role === 'admin' ? <Admin token={token} role={role} /> : <Redirect to='/' />}
+          </Route>
           <Route path='/'>
-            {/* Temp for testing */}
-            {token &&
-              <div>
-                <Dashboard token={token} role={role} />
-              </div>
-            }
-            {!loading && !token && <Redirect to='/login' />}
+            {token ? <Dashboard token={token} role={role} /> : <Redirect to='/login' />}
           </Route>
         </Switch>
       }

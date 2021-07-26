@@ -3,14 +3,14 @@ import Navbar from './Navbar';
 import Requests from './Requests';
 import Search from './Search';
 
-export default function Dashboard({ token }) {
+export default function Dashboard({ token, role }) {
   return (
-    <div>
-      <Navbar />
+    <>
+      <Navbar role={role} />
       <div className='container'>
         <Search token={token} />
         <Requests token={token} />
       </div>
-    </div>
+    </>
   );
 }
