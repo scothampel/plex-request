@@ -17,7 +17,7 @@ module.exports = function (database) {
 
   // users endpoint
   // Get request
-  router.get('/users', authorizedCallback, (req, res) => {
+  router.get('/users', (req, res) => {
     // Find all users, project without _id or pass
     usersCollection.find({}).project({ _id: 0, pass: 0 }).toArray()
       .then(result => {
