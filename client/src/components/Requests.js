@@ -4,23 +4,27 @@ import '../styles/Requests.css';
 export default function Requests({ token }) {
   const [requests, setRequests] = useState([{title: 'Loading...', type: 'info'}]);
 
-  // TODO: fetches every 4m55s because of token refresh, probably change this
   useEffect(() => {
-    fetch('/user/requests', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        const { status, message } = data;
-        if (status === 1) {
-          setRequests(message);
-        }
-        else {
-          setRequests([{ title: 'There are currently no requests', type: 'info' }]);
+    // Check if no requests have been fetched yet
+    // Stops fetch on token refresh
+    // Doesn't prevent if there are no requests, non-issue really
+    if (requests[0].type === 'info') {
+      fetch('/user/requests', {
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
       })
+        .then(res => res.json())
+        .then(data => {
+          const { status, message } = data;
+          if (status === 1) {
+            setRequests(message);
+          }
+          else {
+            setRequests([{ title: 'There are currently no requests', type: 'info' }]);
+          }
+        })
+    }
   },[token])
 
   return (
