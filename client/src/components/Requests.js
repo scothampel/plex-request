@@ -19,6 +19,7 @@ export default function Requests({ token }) {
 
   return (
     <ul className="list-group mb-3">
+      <li className='list-group-item bg-light'><h3>Current Requests</h3></li>
       {
           requests.map((val, index) => {
             const { title, type, year } = val;
