@@ -15,12 +15,15 @@ module.exports = function (database) {
   // Destructure database object
   const { requestsCollection } = database;
 
+  // All routes need to auth user role first
+  router.use(authorizedCallback);
+
   // request endpoint
   // Post request URL or JSON encoded
   // title: String
   // year: String
   // type: String
-  router.post('/request', authorizedCallback, (req, res) => {
+  router.post('/request', (req, res) => {
     const { user } = req.data;
     const { title, type, year } = req.body;
 
@@ -62,7 +65,7 @@ module.exports = function (database) {
   // search endpoint
   // Get request
   // q: String
-  router.get('/search', authorizedCallback, (req, res) => {
+  router.get('/search', (req, res) => {
     const searchQuery = req.query ? req.query.q || '' : '';
 
     // Fetch tvdb config
@@ -124,7 +127,7 @@ module.exports = function (database) {
 
   // requests endpoint
   // Get request
-  router.get('/requests', authorizedCallback, (req, res) => {
+  router.get('/requests', (req, res) => {
     // Find all requests, project without _id or user
     requestsCollection.find({}).project({ _id: 0, user: 0 }).toArray()
       .then(result => {
