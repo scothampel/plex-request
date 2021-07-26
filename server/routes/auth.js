@@ -57,7 +57,8 @@ module.exports = function (database) {
               // Store refresh token in HttpOnly cookie with 7d expiration, only send to /auth
               //res.header('Set-Cookie', `refresh=${refresh}; Max-Age=604800; path=/auth; SameSite=Lax; Secure; HttpOnly`)
               res.cookie('refresh', refresh, {
-                maxAge: 7 * 24 * 60 * 60 * 1000,
+                // If role is unconfirmed, expire cookie immediately
+                maxAge: found.role === 'unconfirmed' ? 0 : 7 * 24 * 60 * 60 * 1000,
                 path: '/auth',
                 sameSite: 'Lax',
                 httpOnly: true,
