@@ -13,6 +13,7 @@ function App() {
   // Can't only use token as login needed
   // Refresh token could have exp while window is open
   const [needLogin, setNeedLogin] = useState(false);
+  const [refreshTimer, setRefreshTimer] = useState();
 
   // Pull new token if refesh cookie is set (logged in)
   // Can not check for refresh cookie, as it is httpOnly
@@ -47,9 +48,11 @@ function App() {
           // Fetch complete, allow proper components to render
           setLoading(false);
           // Interval of 4m55s to auto refresh token
-          setInterval(() => {
+          // Store interval so login can cancel it
+          // Not used in logout, as login renders immediately after
+          setRefreshTimer(setInterval(() => {
             refreshToken()
-          }, ((4 * 60) + 55) * 1000);
+          }, ((4 * 60) + 55) * 1000));
         })
     }
     // Deps set so this fetch only runs when visiting the page for the first time
@@ -62,16 +65,16 @@ function App() {
       {loading ? 'Loading...' : ''}
       {
         // Refresh token still valid, and new token has been fetched
-        !needLogin && !loading &&
+        !needLogin && !loading && role !== 'unconfirmed' &&
         <Switch>
           <Route path='/login'>
-            {token ? <Redirect to='/' /> : <Login setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} />}
+            {token ? <Redirect to='/' /> : <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} refreshTimer={refreshTimer} />}
           </Route>
           <Route path='/register'>
             {token ? <Redirect to='/' /> : <Register />}
           </Route>
           <Route path='/logout'>
-            {token ? <Logout setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} /> : <Redirect to='/' />}
+            {token ? <Logout setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} refreshTimer={refreshTimer} /> : <Redirect to='/' />}
           </Route>
           <Route path='/'>
             {/* Temp for testing */}
@@ -90,7 +93,7 @@ function App() {
         // Except for /register, allow registration
         // When login is needed, ex. GET /request will just render <Login>
         // After login, main routes above will bring user back to /request 
-        needLogin &&
+        (needLogin || role === 'unconfirmed') &&
         <Switch>
           <Route path='/logout'>
             <Redirect to='/login' />
@@ -99,7 +102,7 @@ function App() {
             <Register />
           </Route>
           <Route path='/'>
-            <Login setToken={setToken} setRole={setRole} setNeedLogin={setNeedLogin} />
+            <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} refreshTimer={refreshTimer} />
           </Route>
         </Switch>
       }

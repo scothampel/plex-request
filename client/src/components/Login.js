@@ -1,7 +1,13 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Login.css';
 
-export default function Login({ setToken, setRole, setNeedLogin }) {
+export default function Login({ setToken, role, setRole, setNeedLogin, refreshTimer }) {
+  // Clear refresh timer to avoid /refresh fetches
+  useEffect(() => {
+    clearInterval(refreshTimer)
+  });
+
   const handleSubmit = e => {
     // Prevent submission
     e.preventDefault();
@@ -41,18 +47,20 @@ export default function Login({ setToken, setRole, setNeedLogin }) {
 
   return (
     <div className='container' id='login'>
-      <form onSubmit={ handleSubmit }>
+      <form onSubmit={handleSubmit} className='mb-3'>
         <div className='mb-3'>
           <label htmlFor='user' className='form-label'>Username</label>
-          <input type='text' className='form-control' id='user' name='user' required/>
+          <input type='text' className='form-control' id='user' name='user' required />
         </div>
         <div className='mb-3'>
           <label htmlFor='pass' className='form-label'>Password</label>
-          <input type='password' className='form-control' id='pass' name='pass' required/>
+          <input type='password' className='form-control' id='pass' name='pass' required />
         </div>
         <button type="submit" className="btn btn-primary me-3">Login</button>
         <Link to='/register'>Need an Account? Register here</Link>
       </form>
+        {/* Confirmation needed message */}
+        { role === 'unconfirmed' && <div className='alert alert-warning'>Please have an admin confirm your account. Then login again.</div> }
     </div>
   )
 }
