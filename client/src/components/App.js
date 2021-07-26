@@ -13,15 +13,15 @@ function App() {
   // Can't only use token as login needed
   // Refresh token could have exp while window is open
   const [needLogin, setNeedLogin] = useState(false);
+  const [refreshTimer, setRefreshTimer] = useState(null);
 
   // Pull new token if refesh cookie is set (logged in)
   // Can not check for refresh cookie, as it is httpOnly
   useEffect(() => {
-    // Async/await because of fetch
-    const refreshToken = async () => {
+    const refreshToken = () => {
       // Only try to refresh if already logged in
       if (!needLogin) {
-        await fetch('/auth/refresh', { method: 'POST' })
+        fetch('/auth/refresh', { method: 'POST' })
           .then(res => res.json())
           .then(data => {
             const { status, message } = data
@@ -34,29 +34,31 @@ function App() {
             else {
               setNeedLogin(true);
             }
+            
+            // Fetch complete, allow proper components to render
+            setLoading(false);
           })
           .catch(err => console.error('Could not fetch', err));
       }
     }
 
-    // First load, no token and page is loading
-    if (!token && loading) {
-      // Fetch new token
-      refreshToken()
-        .then(() => {
-          // Fetch complete, allow proper components to render
-          setLoading(false);
-          // Interval of 4m55s to auto refresh token
-          // Store interval so login can cancel it
-          // Not used in logout, as login renders immediately after
-          setInterval(() => {
-            refreshToken()
-          }, ((4 * 60) + 55) * 1000);
-        })
+    // Curretly not refreshing and logged in
+    if (!refreshTimer && !needLogin) {
+      // Interval of 4m55s to auto refresh token
+      // Store interval so login can cancel it
+      setRefreshTimer(setInterval(() => {
+        refreshToken()
+      }, ((4 * 60) + 55) * 10))
+
+      // First page load
+      if (!token) {
+        // Fetch new token
+        refreshToken()
+      }
     }
     // Deps set so this fetch only runs when visiting the page for the first time
     // Also runs on refresh, might also store auth token in a cookie to prevent this
-  }, [token, loading, needLogin]);
+  }, [token, loading, needLogin, refreshTimer]);
 
   return (
     <Router>
@@ -67,7 +69,7 @@ function App() {
         !needLogin && !loading && role !== 'unconfirmed' &&
         <Switch>
           <Route path='/login'>
-            {token ? <Redirect to='/' /> : <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} />}
+            {token ? <Redirect to='/' /> : <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} refreshTimer={refreshTimer} setRefreshTimer={setRefreshTimer} />}
           </Route>
           <Route path='/register'>
             {token ? <Redirect to='/' /> : <Register />}
@@ -101,7 +103,7 @@ function App() {
             <Register />
           </Route>
           <Route path='/'>
-            <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} />
+            <Login setToken={setToken} role={role} setRole={setRole} setNeedLogin={setNeedLogin} refreshTimer={refreshTimer} setRefreshTimer={setRefreshTimer} />
           </Route>
         </Switch>
       }

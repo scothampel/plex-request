@@ -1,7 +1,15 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Login.css';
 
-export default function Login({ setToken, role, setRole, setNeedLogin }) {
+export default function Login({ setToken, role, setRole, setNeedLogin, refreshTimer, setRefreshTimer }) {
+  // Stop refreshing token if trying to login
+  // Also handles stop on logout
+  useEffect(() => {
+    clearInterval(refreshTimer);
+    setRefreshTimer(null);
+  });
+  
   const handleSubmit = e => {
     // Prevent submission
     e.preventDefault();
