@@ -30,7 +30,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
-app.use(helmet());
+// TODO: Maybe use TMDB config address for url
+// Helmet CSP to allow TMDB posters
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      'img-src': ["'self'", 'image.tmdb.org']
+    }
+  }
+}));
 // Serve static react front-end
 app.use(express.static(path.join(__dirname, '../client/build')));
 
