@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -6,6 +5,9 @@ const path = require('path');
 const { MongoClient } = require('mongodb');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+
+// ENV config
+require('dotenv').config({path: path.join(__dirname, './.env')});
 
 // Environment vars and defaults
 const PORT = parseInt(process.env.PORT) || 3001;
@@ -69,9 +71,9 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     }
 
     // Express routes
-    const auth = require('./routes/auth')(database);
-    const user = require('./routes/user')(database);
-    const admin = require('./routes/admin')(database);
+    const auth = require(path.join(__dirname, './routes/auth'))(database);
+    const user = require(path.join(__dirname, './routes/user'))(database);
+    const admin = require(path.join(__dirname, './routes/admin'))(database);
     
     // Router modules
     app.use('/auth', auth);
