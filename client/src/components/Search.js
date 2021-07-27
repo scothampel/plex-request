@@ -52,7 +52,7 @@ export default function Search({ token, setNewRequest }) {
       {
         results.map((val, index) => {
           return (
-            <li key={index} className='list-group-item p-0'>
+            <li key={index} className='list-group-item'>
               <Result info={val} token={token} setNewRequest={setNewRequest} />
             </li>
           )

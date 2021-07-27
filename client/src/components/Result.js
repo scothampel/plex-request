@@ -29,7 +29,7 @@ export default function Result({ info, token, setNewRequest }) {
   }
 
   return (
-    <div className='result row py-2 px-3'>
+    <div className='result row'>
       {type === 'info' && <span>{title}</span>}
       {
         type !== 'info' &&
