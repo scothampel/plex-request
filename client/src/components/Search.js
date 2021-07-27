@@ -48,7 +48,7 @@ export default function Search({ token, setNewRequest }) {
   return (
     <ul className='list-group mb-3'>
       <li className='list-group-item bg-light'><h3>Search</h3></li>
-      <input type='text' className='form-control list-group-item rounded-0' onChange={handleChange} placeholder='ex. Rick and Morty' />
+      <input type='text' className='form-control list-group-item rounded-0 shadow-none border border-top-0' onChange={handleChange} placeholder='ex. Rick and Morty' />
       {
         results.map((val, index) => {
           return (
