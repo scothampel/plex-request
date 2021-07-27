@@ -8,7 +8,7 @@ export default function Requests({ token, role, newRequest, setNewRequest }) {
     // Check if no requests have been fetched yet
     // Stops fetch on token refresh
     // Doesn't prevent if there are no requests, non-issue really
-    if (requests.length === 0 || requests[0].type === 'info') {
+    if (requests[0].type === 'info') {
       fetch('/user/requests', {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -21,7 +21,9 @@ export default function Requests({ token, role, newRequest, setNewRequest }) {
           if (status === 1 && message.length !== 0) {
             setRequests(message);
           }
-          else {
+          // TODO: Probably do this differently
+          // Prevent render loop
+          else if (requests[0].title !== 'There are currently no requests') {
             setRequests([{ title: 'There are currently no requests', type: 'info' }]);
           }
         })

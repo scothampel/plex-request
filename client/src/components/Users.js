@@ -9,7 +9,7 @@ export default function Users({ token }) {
     // handleClick causes rerender, don't fetch again if that happens
     // Also stops fetch on token refresh
     // Doesn't prevent if there are no users, non-issue really
-    if (users.length === 0 || users[0].role === 'info') {
+    if (users[0].role === 'info') {
       fetch('/admin/users', {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -21,7 +21,9 @@ export default function Users({ token }) {
           if (status === 1 && message.length !== 0) {
             setUsers(message);
           }
-          else {
+          // TODO: Probably do this differently
+          // Prevent render loop
+          else if (users[0].name !== 'There are currently no users') {
             setUsers([{ name: 'There are currently no users', role: 'info' }]);
           }
         })
