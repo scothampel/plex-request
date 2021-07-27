@@ -59,21 +59,5 @@ export default function Search({ token, setNewRequest }) {
         })
       }
     </ul>
-
-
-
-    // <div>
-    //   <div className='mb-3'>
-    //     <label htmlFor='search' className='form-label'>Search</label>
-    //     <input type='text' className='form-control' onChange={handleChange} id='search' name='search' />
-    //   </div>
-    //   <div className='mb-3 container'>
-    //     {
-    //       results.map((val, index) => {
-    //         return <Result key={index} info={val} token={token} setNewRequest={setNewRequest} />
-    //       })
-    //     }
-    //   </div>
-    // </div>
   );
 }
