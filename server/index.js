@@ -89,7 +89,7 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     });
 
     app.listen(PORT, () => {
-      console.log(`Listening on http://localhost:${PORT}/api`);
+      console.log(`Listening on http://localhost:${PORT}`);
     });
   })
   .catch(err => { console.log(err); return process.exit(1) });
