@@ -7,19 +7,21 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
 // ENV config
-require('dotenv').config({path: path.join(__dirname, './.env')});
+require('dotenv').config({ path: path.join(__dirname, './.env') });
 
 // Environment vars and defaults
-const PORT = parseInt(process.env.PORT) || 3001;
-const DB_NAME = process.env.DB_NAME;
-const DB_USER = process.env.DB_USER;
-const DB_PASS = process.env.DB_PASS;
-const DB_HOST = process.env.DB_HOST;
-const DB_PORT = parseInt(process.env.DB_PORT);
-const DB_COLLECTIONS_USERS = process.env.DB_COLLECTIONS_USERS;
-const DB_COLLECTIONS_REFRESH = process.env.DB_COLLECTIONS_REFRESH;
-const DB_COLLECTIONS_REQUESTS = process.env.DB_COLLECTIONS_REQUESTS;
-const JWT_AUTH_SECRET = process.env.JWT_AUTH_SECRET;
+const {
+  PORT = 3001,
+  DB_NAME,
+  DB_USER,
+  DB_PASS,
+  DB_HOST,
+  DB_PORT,
+  DB_COLLECTIONS_USERS,
+  DB_COLLECTIONS_REFRESH,
+  DB_COLLECTIONS_REQUESTS,
+  JWT_AUTH_SECRET
+} = process.env;
 
 // Mongodb connect string
 const mongodbStr = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}`;
@@ -83,7 +85,7 @@ MongoClient.connect(mongodbStr, { useUnifiedTopology: true, connectTimeoutMS: 10
     const auth = require(path.join(__dirname, './routes/auth'))(database);
     const user = require(path.join(__dirname, './routes/user'))(database);
     const admin = require(path.join(__dirname, './routes/admin'))(database);
-    
+
     // Router modules
     app.use('/auth', auth);
     app.use('/user', authJWTCallback, user);

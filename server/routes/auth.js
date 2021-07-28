@@ -4,9 +4,11 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 // Environment vars
-const JWT_AUTH_SECRET = process.env.JWT_AUTH_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
-const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS);
+const {
+  JWT_AUTH_SECRET,
+  JWT_REFRESH_SECRET,
+  BCRYPT_ROUNDS
+} = process.env;
 
 // JWT auth function
 const authJWT = (token, secret) => jwt.verify(token, secret, (err, data) => err ? false : data);
@@ -103,7 +105,7 @@ module.exports = function (database) {
             const newUser = {
               name,
               user,
-              pass: bcrypt.hashSync(pass, BCRYPT_ROUNDS),
+              pass: bcrypt.hashSync(pass, parseInt(BCRYPT_ROUNDS)),
               role: 'unconfirmed'
             }
 

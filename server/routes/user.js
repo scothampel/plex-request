@@ -1,10 +1,9 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const router = express.Router();
-const ObjectId = require('mongodb').ObjectId;
 
 // Environment vars
-const TMDB_TOKEN = process.env.TMDB_TOKEN;
+const { TMDB_TOKEN } = process.env;
 
 // Authorized callback
 const authorizedCallback = (req, res, next) => {
