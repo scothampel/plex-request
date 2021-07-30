@@ -34,9 +34,8 @@ export default function Result({ info, token, setNewRequest }) {
       {
         type !== 'info' &&
         <>
-          {/* TODO: Handle null poster */}
           <div className='col-md-2 d-none d-md-block text-center'>
-            <img src={poster} alt='poster'></img>
+            {poster && <img src={poster} alt='poster'></img>}
           </div>
           <div className='col-8'>
             <span className='d-block'><span className='h6'>{title} </span><i>{year}</i></span>
