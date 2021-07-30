@@ -89,8 +89,8 @@ module.exports = function (database) {
               const { total_results, results } = data;
               if (total_results !== 0) {
                 // Only use results that are movie or tv, and have a valid poster
-                // Won't show obscure results, not a huge worry right now
-                const resultsMovieTV = results.filter(val => val.media_type !== 'person' && val.poster_path);
+                // More obscure results need tighter search criteria
+                const resultsMovieTV = results.filter(val => total_results > 6 ? val.media_type !== 'person' && val.poster_path : val.media_type !== 'person');
                 // Max results 6, unless total_results is less than 6
                 // Format and record required data
                 const formatted = resultsMovieTV.slice(0, total_results < 6 ? total_results : 6).map(current => {
