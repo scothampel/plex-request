@@ -86,8 +86,10 @@ export default function Requests({ token, role, newRequest, setNewRequest }) {
             <li key={index} className='list-group-item'>
               <b>{title} </b>
               <i>{year || ''}</i>
-              {role === 'admin' && <button type='button' className='btn btn-sm btn-warning float-end ms-3' onClick={handleClick} data-id={_id} >Remove</button>}
-              <span className={'badge float-end ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}><span className='align-text-bottom'>{type.toUpperCase()}</span></span>
+              <div className='d-inline-flex float-end align-items-center'>
+                <span className={'badge ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}><span className='align-text-bottom'>{type.toUpperCase()}</span></span>
+                {role === 'admin' && <button type='button' className='btn btn-sm btn-warning ms-3' onClick={handleClick} data-id={_id} >Remove</button>}
+              </div>
             </li>
           )
         })
