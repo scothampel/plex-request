@@ -87,7 +87,7 @@ export default function Requests({ token, role, newRequest, setNewRequest }) {
               <b>{title} </b>
               <i>{year || ''}</i>
               {role === 'admin' && <button type='button' className='btn btn-sm btn-warning float-end ms-3' onClick={handleClick} data-id={_id} >Remove</button>}
-              <span className={'badge float-end ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}>{type.toUpperCase()}</span>
+              <span className={'badge float-end ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}><span className='align-text-bottom'>{type.toUpperCase()}</span></span>
             </li>
           )
         })

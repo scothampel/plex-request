@@ -81,7 +81,7 @@ export default function Users({ token }) {
             <li key={index} className='list-group-item'>
               <b>{user} </b>
               <span>({name}) </span>
-              <span className={'badge ' + (role === 'admin' ? 'bg-danger' : role === 'user' ? 'bg-primary' : 'bg-warning')}>{role.toUpperCase()}</span>
+              <span className={'badge ' + (role === 'admin' ? 'bg-danger' : role === 'user' ? 'bg-primary' : 'bg-warning')}><span className='align-text-bottom'>{role.toUpperCase()}</span></span>
               <div className='dropdown float-end'>
                 <button className='btn btn-sm btn-outline-secondary dropdown-toggle' type='button' id={'userMenuDrop' + index} data-bs-toggle='dropdown' />
                 <ul className='dropdown-menu'>

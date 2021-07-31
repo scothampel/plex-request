@@ -39,7 +39,7 @@ export default function Result({ info, token, setNewRequest }) {
           </div>
           <div className='col-8'>
             <span className='d-block'><span className='h6'>{title} </span><i>{year}</i></span>
-            <span className={'badge ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}>{type.toUpperCase()}</span>
+            <span className={'badge ' + (type === 'tv' ? 'bg-danger' : 'bg-primary')}><span className='align-text-bottom'>{type.toUpperCase()}</span></span>
           </div>
           <div className='col-4 col-md-2 d-flex flex-column justify-content-center'>
             <button className='btn btn-success' onClick={handleClick}>Request</button>
