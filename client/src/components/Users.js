@@ -68,7 +68,7 @@ export default function Users({ token }) {
   }
 
   return (
-    <ul className="list-group mb-3 shadow-sm">
+    <ul className="list-group shadow-sm">
       <li className='list-group-item bg-light'><h3>Users</h3></li>
       {
         users.map((val, index) => {

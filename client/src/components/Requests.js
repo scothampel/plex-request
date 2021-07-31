@@ -73,7 +73,7 @@ export default function Requests({ token, role, newRequest, setNewRequest }) {
   }
 
   return (
-    <ul className="list-group mb-3 shadow-sm">
+    <ul className="list-group shadow-sm">
       <li className='list-group-item bg-light'><h3>Current Requests</h3></li>
       {
         requests.map((val, index) => {

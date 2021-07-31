@@ -12,10 +12,18 @@ export default function Dashboard({ token, role }) {
   return (
     <>
       <Navbar />
-      <div className='container'>
-        <Search token={token} setNewRequest={setNewRequest} />
-        <Requests token={token} role={role} newRequest={newRequest} setNewRequest={setNewRequest} />
-        {role === 'admin' && <Users token={token} />}
+      <div className='container py-3'>
+        <div className='row row-cols-1 gy-3'>
+          <div className='col'>
+            <Search token={token} setNewRequest={setNewRequest} />
+          </div>
+          <div className='col'>
+            <Requests token={token} role={role} newRequest={newRequest} setNewRequest={setNewRequest} />
+          </div>
+          <div className='col'>
+            {role === 'admin' && <Users token={token} />}
+          </div>
+        </div>
       </div>
     </>
   );
