@@ -10,6 +10,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Khula', sans-serif!important;
 }
 
 #root {
@@ -65,4 +66,14 @@ fieldset[disabled] .btn.btn-theme-accent.active {
 .btn.btn-theme-accent .badge { 
   color: var(--accent-500); 
   background-color: #FFFFFF; 
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Khula:wght@400;700&display=swap');
+.font-primary {
+  font-family: 'Khula', sans-serif;
+  font-weight: 700;
+}
+.font-secondary {
+  font-family: 'Khula', sans-serif;
+  font-weight: 400;
 }
