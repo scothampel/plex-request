@@ -1,12 +1,68 @@
 :root {
   --bg-800: #222;
   --bg-700: #333;
-  --accent-500: hsl(42, 87, 50);
-  --accent-400: hsl(42, 87, 60); 
+  --accent-500: hsl(42, 87%, 50%);
+  --accent-450: hsl(42, 87%, 55%);
+  --accent-400: hsl(42, 87%, 60%); 
 }
 
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  background-color: var(--bg-700);
+  background-image: url(../images/bg.png);
+}
+
+.bg-theme-800 {
+  background: var(--bg-800)!important;
+}
+
+.btn.btn-theme-accent { 
+  color: #FFFFFF; 
+  background-color: var(--accent-500); 
+  border-color: var(--accent-450); 
+} 
+ 
+.btn.btn-theme-accent:hover, 
+.btn.btn-theme-accent:focus, 
+.btn.btn-theme-accent:active, 
+.btn.btn-theme-accent.active, 
+.open .dropdown-toggle.btn-theme-accent { 
+  color: #FFFFFF; 
+  background-color: var(--accent-400); 
+  border-color: var(--accent-450); 
+} 
+ 
+.btn.btn-theme-accent:active, 
+.btn.btn-theme-accent.active, 
+.open .dropdown-toggle.btn-theme-accent { 
+  background-image: none; 
+} 
+ 
+.btn.btn-theme-accent.disabled, 
+.btn.btn-theme-accent[disabled], 
+fieldset[disabled] .btn.btn-theme-accent, 
+.btn.btn-theme-accent.disabled:hover, 
+.btn.btn-theme-accent[disabled]:hover, 
+fieldset[disabled] .btn.btn-theme-accent:hover, 
+.btn.btn-theme-accent.disabled:focus, 
+.btn.btn-theme-accent[disabled]:focus, 
+fieldset[disabled] .btn.btn-theme-accent:focus, 
+.btn.btn-theme-accent.disabled:active, 
+.btn.btn-theme-accent[disabled]:active, 
+fieldset[disabled] .btn.btn-theme-accent:active, 
+.btn.btn-theme-accent.disabled.active, 
+.btn.btn-theme-accent[disabled].active, 
+fieldset[disabled] .btn.btn-theme-accent.active { 
+  background-color: var(--accent-500); 
+  border-color: var(--accent-450); 
+} 
+ 
+.btn.btn-theme-accent .badge { 
+  color: var(--accent-500); 
+  background-color: #FFFFFF; 
 }
