@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <nav className='navbar navbar-dark bg-theme-800'>
       <div className='container'>
-        <Link to='/' className='navbar-brand font-primary'>PLE<span className='color-accent'>X</span> Requests</Link>
+        <Link to='/' className='navbar-brand font-primary'>PLE<span className='text-accent'>X</span> Requests</Link>
         <Link to='/logout' className='btn btn-theme-accent'>Logout</Link>
       </div>
     </nav>
