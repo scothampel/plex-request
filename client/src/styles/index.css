@@ -22,6 +22,9 @@ body {
 .bg-theme-800 {
   background: var(--bg-800)!important;
 }
+.bg-theme-700 {
+  background: var(--bg-700)!important;
+}
 
 .btn.btn-theme-accent { 
   color: #FFFFFF; 
@@ -87,8 +90,8 @@ h1, h2, h3, h4, h5, h6 {
   height: fit-content;
 }
 
-.color-accent {
-  color: var(--accent-500);
+.text-accent {
+  color: var(--accent-500)!important;
 }
 
 .list-group-item h1,
@@ -98,4 +101,12 @@ h1, h2, h3, h4, h5, h6 {
 .list-group-item h5,
 .list-group-item h6 {
   margin-bottom: 0;
+}
+
+.shadow-accent {
+  box-shadow: 3px 3px 3px var(--accent-500);
+}
+
+.border-bottom-accent {
+  border-bottom: 2px solid var(--accent-500);
 }
