@@ -54,23 +54,27 @@ export default function Register() {
       {registered && <Redirect to='/login' />}
       {
         !registered &&
-        <div className='container' id='login'>
-          <form onSubmit={handleSubmit}>
-            <div className='mb-3'>
-              <label htmlFor='name' className='form-label'>Name</label>
-              <input type='text' className='form-control' id='name' name='name' required />
-            </div>
-            <div className='mb-3'>
-              <label htmlFor='user' className='form-label'>Username</label>
-              <input type='text' className='form-control' id='user' name='user' required />
-            </div>
-            <div className='mb-3'>
-              <label htmlFor='pass' className='form-label'>Password</label>
-              <input type='password' className='form-control' id='pass' name='pass' required />
-            </div>
-            <button type="submit" className="btn btn-primary me-3">Register</button>
-            <Link to='/login'>Already have an Account? Login here</Link>
-          </form>
+        <div className='container py-3' id='login'>
+          <ul className='list-group shadow-accent'>
+            <li className='list-group-item text-white bg-theme-800'>
+              <form onSubmit={handleSubmit}>
+                <div className='mb-3'>
+                  <label htmlFor='name' className='form-label font-primary'>NAME</label>
+                  <input type='text' className='form-control text-white bg-theme-700' id='name' name='name' required />
+                </div>
+                <div className='mb-3'>
+                  <label htmlFor='user' className='form-label font-primary'>USERNAME</label>
+                  <input type='text' className='form-control text-white bg-theme-700' id='user' name='user' required />
+                </div>
+                <div className='mb-3'>
+                  <label htmlFor='pass' className='form-label font-primary'>PASSWORD</label>
+                  <input type='password' className='form-control text-white bg-theme-700' id='pass' name='pass' required />
+                </div>
+                <button type="submit" className="btn btn-theme-accent me-3">Register</button>
+                <Link to='/login' className='link-light'>Already have an Account? Login here</Link>
+              </form>
+            </li>
+          </ul>
         </div>
       }
     </>

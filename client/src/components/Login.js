@@ -54,19 +54,23 @@ export default function Login({ setToken, role, setRole, setNeedLogin, refreshTi
   }
 
   return (
-    <div className='container' id='login'>
-      <form onSubmit={handleSubmit} className='mb-3'>
-        <div className='mb-3'>
-          <label htmlFor='user' className='form-label'>Username</label>
-          <input type='text' className='form-control' id='user' name='user' required />
-        </div>
-        <div className='mb-3'>
-          <label htmlFor='pass' className='form-label'>Password</label>
-          <input type='password' className='form-control' id='pass' name='pass' required />
-        </div>
-        <button type="submit" className="btn btn-primary me-3">Login</button>
-        <Link to='/register'>Need an Account? Register here</Link>
-      </form>
+    <div className='container py-3' id='login'>
+      <ul className='list-group shadow-accent'>
+        <li className='list-group-item text-white bg-theme-800'>
+          <form onSubmit={handleSubmit} className='mb-3'>
+            <div className='mb-3'>
+              <label htmlFor='user' className='form-label font-primary'>USERNAME</label>
+              <input type='text' className='form-control text-white bg-theme-700' id='user' name='user' required />
+            </div>
+            <div className='mb-3'>
+              <label htmlFor='pass' className='form-label font-primary'>PASSWORD</label>
+              <input type='password' className='form-control text-white bg-theme-700' id='pass' name='pass' required />
+            </div>
+            <button type="submit" className="btn btn-theme-accent me-3">Login</button>
+            <Link to='/register' className='link-light'>Need an Account? Register here</Link>
+          </form>
+        </li>
+      </ul>
       {/* Confirmation needed message */}
       {role === 'unconfirmed' && <div className='alert alert-warning'>Please have an admin confirm your account. Then login again.</div>}
     </div>

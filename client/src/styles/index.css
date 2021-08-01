@@ -110,3 +110,7 @@ h1, h2, h3, h4, h5, h6 {
 .border-bottom-accent {
   border-bottom: 2px solid var(--accent-500);
 }
+
+.border-accent {
+  border-color: var(--accent-500)!important;
+}
