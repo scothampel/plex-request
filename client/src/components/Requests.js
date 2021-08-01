@@ -73,17 +73,17 @@ export default function Requests({ token, role, newRequest, setNewRequest }) {
   }
 
   return (
-    <ul className="list-group shadow-sm">
-      <li className='list-group-item bg-light'><h3>Current Requests</h3></li>
+    <ul className="list-group shadow-accent">
+      <li className='list-group-item text-white bg-theme-800'><h3>Current Requests</h3></li>
       {
         requests.map((val, index) => {
           const { _id, title, type, year } = val;
           // Loading state
           if (type === 'info') {
-            return <li key={index} className='list-group-item'>{title}</li>
+            return <li key={index} className='list-group-item text-white bg-theme-700 border-dark'>{title}</li>
           }
           return (
-            <li key={index} className='list-group-item'>
+            <li key={index} className='list-group-item text-white bg-theme-700 border-dark'>
               <b>{title} </b>
               <i>{year || ''}</i>
               <div className='d-inline-flex float-end align-items-center'>

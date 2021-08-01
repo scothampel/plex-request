@@ -46,13 +46,13 @@ export default function Search({ token, setNewRequest }) {
   }
 
   return (
-    <ul className='list-group search shadow-sm'>
-      <li className='list-group-item bg-light'><h3>Search</h3></li>
-      <input type='text' className='list-group-item' onChange={handleChange} placeholder='ex. Rick and Morty' />
+    <ul className='list-group search shadow-accent'>
+      <li className='list-group-item text-white bg-theme-800'><h3>Search</h3></li>
+      <input type='text' className='list-group-item text-white bg-theme-700 border-dark' onChange={handleChange} placeholder='ex. Rick and Morty' />
       {
         results.map((val, index) => {
           return (
-            <li key={index} className='list-group-item'>
+            <li key={index} className='list-group-item text-white bg-theme-700 border-dark'>
               <Result info={val} token={token} setNewRequest={setNewRequest} />
             </li>
           )

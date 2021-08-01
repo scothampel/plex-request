@@ -68,17 +68,17 @@ export default function Users({ token }) {
   }
 
   return (
-    <ul className="list-group shadow-sm">
-      <li className='list-group-item bg-light'><h3>Users</h3></li>
+    <ul className="list-group shadow-accent">
+      <li className='list-group-item text-white bg-theme-800'><h3>Users</h3></li>
       {
         users.map((val, index) => {
           const { name, user, role } = val;
           // Loading state
           if (role === 'info') {
-            return <li key={index} className='list-group-item'>{name}</li>
+            return <li key={index} className='list-group-item text-white bg-theme-700 border-dark'>{name}</li>
           }
           return (
-            <li key={index} className='list-group-item'>
+            <li key={index} className='list-group-item text-white bg-theme-700 border-dark'>
               <b>{user} </b>
               <span>({name}) </span>
               <span className={'badge ' + (role === 'admin' ? 'bg-danger' : role === 'user' ? 'bg-primary' : 'bg-warning')}><span className='align-text-bottom'>{role.toUpperCase()}</span></span>
