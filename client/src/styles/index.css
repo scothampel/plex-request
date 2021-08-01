@@ -86,3 +86,7 @@ h1, h2, h3, h4, h5, h6 {
 .badge {
   height: fit-content;
 }
+
+.color-accent {
+  color: var(--accent-500);
+}
