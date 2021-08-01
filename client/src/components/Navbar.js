@@ -3,7 +3,7 @@ import '../styles/Navbar.css';
 
 export default function Navbar() {
   return (
-    <nav className='navbar navbar-dark bg-theme-800 shadow-sm'>
+    <nav className='navbar navbar-dark bg-theme-800'>
       <div className='container'>
         <Link to='/' className='navbar-brand font-primary'>PLEX Requests</Link>
         <Link to='/logout' className='btn btn-theme-accent'>Logout</Link>
